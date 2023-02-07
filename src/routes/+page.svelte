@@ -1,12 +1,2 @@
-<script>
-import { onMount } from "svelte"
-import { counter } from "$/store/test.js"
-
-onMount(() => {
-  counter.add()
-  console.log($counter.counter)
-})
-</script>
-
 <h1>App</h1>
 <a href="/main">main</a>

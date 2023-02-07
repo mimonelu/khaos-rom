@@ -1,18 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&display=swap');
+
 :root {
-  font-size: 1.25vmax;
+  font-size: 1vmax;
 }
 
 body {
-  --bg-color: 240, 240, 240;
-  --fg-color: 16, 16, 16;
-  --middle-color: 192, 192, 192;
-  --accent-color: 0, 120, 240;
+  --bg-color: 16, 16, 16;
+  --fg-color: 240, 240, 240;
+  --middle-color: 128, 128, 128;
+  --accent-color: 0, 240, 0;
   background-color: rgb(var(--bg-color));
   color: rgb(var(--fg-color));
+  font-family: "BIZ UDPGothic", sans-serif;
   font-feature-settings: "palt";
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  overflow-y: scroll;
   -webkit-tap-highlight-color: transparent;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  &::-webkit-scrollbar {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--middle-color));
+  }
+}
+
+.button {
+  background-color: rgb(var(--accent-color));
+  color: rgb(var(--bg-color));
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0.375rem 1rem;
 }
