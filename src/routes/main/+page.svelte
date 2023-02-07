@@ -8,5 +8,5 @@ onMount(() => {
 })
 </script>
 
-<h1>App</h1>
-<a href="/main">main</a>
+<h2>TEST</h2>
+<a href="/">home</a>

@@ -1,0 +1,18 @@
+:root {
+  font-size: 1.25vmax;
+}
+
+body {
+  --bg-color: 240, 240, 240;
+  --fg-color: 16, 16, 16;
+  --middle-color: 192, 192, 192;
+  --accent-color: 0, 120, 240;
+  background-color: rgb(var(--bg-color));
+  color: rgb(var(--fg-color));
+  font-feature-settings: "palt";
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
