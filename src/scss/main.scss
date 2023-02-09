@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap");
 
 :root {
-  font-size: 1vmax;
+  font-size: calc(0.375vmax + 10px);
 }
 
 body {
-  --bg-color: 16, 16, 16;
+  --bg-color: 24, 24, 24;
   --fg-color: 240, 240, 240;
-  --middle-color: 128, 128, 128;
-  --accent-color: 0, 240, 0;
+  --access-color: 24, 240, 24;
+  --accent-color: 240, 48, 240;
   background-color: rgb(var(--bg-color));
   color: rgb(var(--fg-color));
-  font-family: "BIZ UDPGothic", sans-serif;
+  font-family: "M PLUS Rounded 1c", sans-serif;
   font-feature-settings: "palt";
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -19,18 +19,19 @@ body {
   -webkit-tap-highlight-color: transparent;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  user-select: none;
   &::-webkit-scrollbar {
     background-color: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: rgb(var(--middle-color));
+    background-color: rgba(var(--fg-color), 0.5);
   }
 }
 
 .button {
-  background-color: rgb(var(--accent-color));
+  background-color: rgb(var(--access-color));
   color: rgb(var(--bg-color));
   cursor: pointer;
   font-weight: bold;
-  padding: 0.375rem 1rem;
+  padding: 0.375rem 1.5rem;
 }
