@@ -1,23 +1,21 @@
 <script>
 import { onMount, onDestroy } from "svelte"
-import { toggle, connect, disconnect } from "$/composables/nostr.js"
-import store from "$/store/store.js"
+import blockStore from "$/store/block.js"
+import nostraStore from "$/store/nostra.js"
 import EventTable from "$/components/EventTable.svelte"
 import Icon from "$/components/Icon.svelte"
 
 onMount(async () => {
-  store.loadBlocks()
-  await connect()
+  blockStore.loadBlocks()
+  await nostraStore.connectAll()
 })
 
 onDestroy(async () => {
-  await disconnect()
+  await nostraStore.disconnectAll()
 })
 
-let isConnected = false
-
-async function toggleConnection () {
-  isConnected = await toggle()
+const toggleConnection = async () => {
+  await nostraStore.toggle()
 }
 </script>
 
@@ -26,14 +24,16 @@ async function toggleConnection () {
     <h2>
       <a href="/">Easis</a>
     </h2>
+    <div>Unique events: {$nostraStore.events.size}</div>
+    <div>Events: {$nostraStore.receivedNumberOfEvent}</div>
     <figure>
       <Icon name="block" />
-      <figcaption>{$store.blocks.size}</figcaption>
+      <figcaption>{$blockStore.size}</figcaption>
     </figure>
     <button
       class="button"
       on:click="{() => toggleConnection()}"
-    >{isConnected ? "Disconnect" : "Connect"}</button>
+    >{$nostraStore.status}</button>
   </div>
   <EventTable />
 </div>
@@ -58,11 +58,14 @@ async function toggleConnection () {
   z-index: 1;
   width: 100%;
 
+  h2 + * {
+    margin-left: auto;
+  }
+
   figure {
     display: flex;
     align-items: center;
     grid-gap: 0.5rem;
-    margin-left: auto;
 
     :global(svg) {
       fill: rgb(var(--fg-color));

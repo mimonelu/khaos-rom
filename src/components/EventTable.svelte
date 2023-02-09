@@ -1,9 +1,12 @@
 <script>
-import store from "$/store/store.js"
+import blockStore from "$/store/block.js"
+import nostraStore from "$/store/nostra.js"
 import Icon from "$/components/Icon.svelte"
 
+const regexJP = /[\u3041-\u3096]|[\u30A1-\u30FA]/
+
 let events = []
-$: events = $store.events.filter(event => !$store.blocks.has(event.pubkey))
+$: events = Array.from($nostraStore.events.values()).reverse().filter(event => !$blockStore.has(event.pubkey) && event.content.match(regexJP))
 
 function openPost (event) {
   window.open(`https://iris.to/#/post/${event.id}`)
@@ -24,13 +27,34 @@ function openProfile (event) {
   <header>sig</header>
   <header />
 {#each events as event}
-  <div class="id">{event.id}</div>
-  <div class="pubkey">{event.pubkey}</div>
-  <div class="created_at">{event.created_at}</div>
-  <div class="kind">{event.kind}</div>
-  <div class="tags">{event.tags}</div>
-  <div class="content">{event.content}</div>
-  <div class="sig">{event.sig}</div>
+  <div
+    class="id"
+    title="{event.id}"
+  >{event.id}</div>
+  <div
+    class="pubkey"
+    title="{event.pubkey}"
+  >{event.pubkey}</div>
+  <div
+    class="created_at"
+    title="{event.created_at}"
+  >{event.created_at}</div>
+  <div
+    class="kind"
+    title="{event.kind}"
+  >{event.kind}</div>
+  <div
+    class="tags"
+    title="{event.tags}"
+  >{event.tags}</div>
+  <div
+    class="content"
+    title="{event.content}"
+  >{event.content}</div>
+  <div
+    class="sig"
+    title="{event.sig}"
+  >{event.sig}</div>
   <div class="menu">
   {#if event.kind === 1}
     <button
@@ -43,7 +67,7 @@ function openProfile (event) {
     >Profile</button>
     <button
       class="button"
-      on:click="{() => store.addBlock(event)}"
+      on:click="{() => blockStore.addBlock(event)}"
     >
       <Icon name="block" />
     </button>
@@ -57,7 +81,7 @@ function openProfile (event) {
   display: grid;
   align-items: center;
   grid-gap: 0.25rem 0.5rem;
-  grid-template-columns: 1fr 1fr auto auto 1fr 3fr 1fr auto;
+  grid-template-columns: 1fr 1fr auto auto 1fr 8fr 1fr auto;
   position: relative;
   overflow: hidden;
   & > header {
