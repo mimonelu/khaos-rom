@@ -9,6 +9,9 @@ body {
   --fg-color: 240, 240, 240;
   --access-color: 24, 240, 24;
   --accent-color: 240, 48, 240;
+
+  --max-width: 768px;
+
   background-color: rgb(var(--bg-color));
   color: rgb(var(--fg-color));
   font-family: "M PLUS Rounded 1c", sans-serif;
@@ -32,6 +35,10 @@ body {
   background-color: rgb(var(--access-color));
   color: rgb(var(--bg-color));
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 0.5rem;
   font-weight: bold;
-  padding: 0.375rem 1.5rem;
+  padding: 0.5rem 2rem;
 }

@@ -36,6 +36,33 @@ function create () {
       })
     },
 
+    inquireProfile (relayUrl, pubkey, onSuccess, onError) {
+      const relay = relayInit(`wss://${relayUrl}`)
+      relay.on("connect", () => {
+        console.log(`connected to ${relay.url}`)
+        const sub = relay.sub([{
+          kinds: [0],
+          authors: [pubkey],
+        }])
+        sub.on("event", event => {
+          const profile = JSON.parse(event.content ?? "")
+          onSuccess(profile)
+          sub.on("eose", () => {
+            console.log("eose")
+            sub.unsub()
+          })
+        })
+      })
+      relay.on("disconnect", () => {
+        console.log(`disconnected to ${relay.url}`)
+      })
+      relay.on("error", () => {
+        console.log(`failed to connect to ${relay.url}`)
+        onError()
+      })
+      relay.connect()
+    },
+
     async connectAll () {
       const targetRelays = relays.filter(relay => {
         if (relay.status !== "disconnected") return false
@@ -57,10 +84,19 @@ function create () {
         })
         let sub = relay.relay.sub([{
           kinds: [1],
-          // authors: [publicKey],
           limit: 100,
         }])
         sub.on("event", event => {
+          if (event.kind !== 1) return
+
+          event.content ??= ""
+          event.created_at ??= 0
+          event.id ??= ""
+          event.kind ??= - 1
+          event.pubkey ??= ""
+          event.sig ??= ""
+          event.tags ??= []
+
           update(context => {
             if (!context.events.has(event.id)) {
               event.received_at = Math.floor(Date.now() / 1000)
@@ -69,6 +105,7 @@ function create () {
                 relay: relay.url,
                 created_at: format(new Date(event.created_at * 1000), "MM/dd HH:mm:ss"),
                 received_at: format(new Date(event.received_at * 1000), "MM/dd HH:mm:ss"),
+                color: event.pubkey.slice(0, 3),
               })
 
               // 不要？
@@ -98,6 +135,7 @@ function create () {
       await Promise.all(relays.map(relay => relay.relay?.close()))
     },
 
+    /*
     async connect () {
       if (relay != null) return
       update(context => {
@@ -141,6 +179,7 @@ function create () {
       await relay.close()
       relay = null
     },
+    */
   }
 }
 

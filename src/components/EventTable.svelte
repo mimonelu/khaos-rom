@@ -12,12 +12,13 @@ function openProfile (event) {
 }
 </script>
 
-<div class="event-table">
+<div class="container">
 {#each $nostraStore.displayEvents as event}
-  <div class="event">
-    <div class="event__thumbnail" data-hash="{event.src.pubkey[0]}">
-      <i />
-    </div>
+  <a
+    class="event"
+    href="{`/post?relay=${event.relay}&pubkey=${event.src.pubkey}`}"
+  >
+    <div class="event__thumbnail" style="{`border-color: #${event.color};`}" />
     <div class="event__header">
       <div class="event__item received_at" title="{event.src.received_at}">{event.received_at}</div>
       <div class="event__item created_at" title="{event.src.created_at}">
@@ -53,19 +54,19 @@ function openProfile (event) {
       {/if}
       </div>
     </div>
-  </div>
+  </a>
 {/each}
 </div>
 
 <style lang="scss">
-.event-table {
+.container {
   display: flex;
   flex-direction: column;
   grid-gap: 0.5rem;
   line-height: 1;
+  padding: 0 1rem;
 
   .event {
-    border-top: 1px solid rgba(var(--fg-color), 0.0625);
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-areas:
@@ -76,35 +77,8 @@ function openProfile (event) {
 
     &__thumbnail {
       border: 1px solid rgba(var(--fg-color), 0.125);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       grid-area: t;
       width: 2.25rem;
-      & > i {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.5rem;
-        width: 1rem;
-        height: 1rem;
-      }
-      &[data-hash="0"] > i { background-color: rgb(240, 0, 0); }
-      &[data-hash="1"] > i { background-color: rgb(0, 240, 0); }
-      &[data-hash="2"] > i { background-color: rgb(0, 0, 240); }
-      &[data-hash="3"] > i { background-color: rgb(240, 240, 0); }
-      &[data-hash="4"] > i { background-color: rgb(240, 0, 240); }
-      &[data-hash="5"] > i { background-color: rgb(0, 240, 240); }
-      &[data-hash="6"] > i { background-color: rgb(240, 128, 0); }
-      &[data-hash="7"] > i { background-color: rgb(128, 240, 0); }
-      &[data-hash="8"] > i { background-color: rgb(0, 240, 128); }
-      &[data-hash="9"] > i { background-color: rgb(0, 128, 240); }
-      &[data-hash="a"] > i { background-color: rgb(128, 0, 240); }
-      &[data-hash="b"] > i { background-color: rgb(240, 0, 128); }
-      &[data-hash="c"] > i { background-color: rgb(240, 192, 128); }
-      &[data-hash="d"] > i { background-color: rgb(128, 240, 192); }
-      &[data-hash="e"] > i { background-color: rgb(192, 128, 240); }
-      &[data-hash="f"] > i { background-color: rgb(240, 128, 192); }
     }
     &__header {
       display: flex;
