@@ -2,61 +2,60 @@
 import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
 import SVGIcon from "$/components/SVGIcon.svelte"
-
-function openPost (event) {
-  window.open(`https://iris.to/#/post/${event.id}`)
-}
-
-function openProfile (event) {
-  window.open(`https://iris.to/#/profile/${event.pubkey}`)
-}
 </script>
 
 <div class="container">
 {#each $nostrStore.displayEvents as event}
-  <a
+  <div
     class="event"
-    data-reply="{event.replyStatus === 1}"
-    href="{`/post?relay=${event.relay}&pubkey=${event.pubkey}`}"
+    data-reply="{event.replyStatus === 1 || event.replyStatus === 2}"
   >
-    <div class="event__thumbnail" style="{`border-color: #${event.color};`}" />
-    <div class="event__header">
-      <div class="event__item pubkey" title="{event.pubkey}">{event.color}</div>
-      <div class="event__item received_at" title="{event.received_at}">{event.received_at_string}</div>
-      <div class="event__item created_at" title="{event.created_at}">{event.created_at_string}</div>
-      <div class="event__item relay" title="{event.relay}">
-        <SVGIcon name="relay" />
-        <span>{event.relay}</span>
-      </div>
-    </div>
-    <div class="event__detail">
-      <div class="event__item id" title="{event.id}">{event.id}</div>
-      <div class="event__item kind" title="{event.kind}">{event.kind}</div>
-      <div class="event__item tags" title="{event.tags}">{event.tags}</div>
-      <div class="event__item sig" title="{event.sig}">{event.sig}</div>
-    </div>
-    <div class="event__body">
+    <a
+      class="thumbnail"
+      href="{`/post?relay=${event.relay}&pubkey=${event.pubkey}`}"
+      style="{`border-color: #${event.colorHex};`}"
+    >Thumbnail</a>
+    <div class="top">
     {#if event.replyStatus === 1}
-      <div class="event__item reply">
+      <div class="reply">
         <SVGIcon name="reply" />
       </div>
     {:else if event.replyStatus === 2}
-      <div class="event__item reply">
+      <div class="reply">
         <SVGIcon name="block" />
       </div>
     {/if}
-      <div class="event__item content" title="{event.content}">{event.content}</div>
-      <div class="event__item menu">
-      {#if event.kind === 1}
-        <button class="button" on:click="{() => openPost(event)}">Post</button>
-        <button class="button" on:click="{() => openProfile(event)}">Profile</button>
-        <button class="button" on:click="{() => blockStore.addBlock(event)}">
+      <div class="content">{event.content}</div>
+      <button class="button menu-button">
+        <SVGIcon name="cursorDown" />
+      </button>
+      <div class="menu">
+        <a
+          class="button"
+          href="{`/post?relay=${event.relay}&pubkey=${event.pubkey}`}"
+        >Post</a>
+        <a
+          class="button"
+          href="{`/profile?relay=${event.relay}&pubkey=${event.pubkey}`}"
+        >Profile</a>
+        <button
+          class="button"
+          on:click="{() => blockStore.addBlock(event)}"
+        >
           <SVGIcon name="block" />
         </button>
-      {/if}
       </div>
     </div>
-  </a>
+    <div class="bottom">
+      <div
+        class="pubkey"
+        style="{`background-color: rgba(${event.colorRgb}, 0.25);`}"
+      >{event.colorHex}</div>
+      <div class="received_at">{event.received_at_string}</div>
+      <div class="created_at">{event.created_at_string}</div>
+      <div class="relay">{event.relay}</div>
+    </div>
+  </div>
 {/each}
 </div>
 
@@ -64,106 +63,105 @@ function openProfile (event) {
 .container {
   display: flex;
   flex-direction: column;
-  grid-gap: 0.5rem;
+  grid-gap: 1rem;
   line-height: 1;
   padding: 0 1rem;
+}
 
-  .event {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      "t b"
-      "t h";
-    grid-gap: 0.5rem;
-    padding-top: 0.5rem;
-    &[data-reply="true"] {
-      padding-left: 1.125rem;
-    }
-
-    &__thumbnail {
-      border: 1px solid rgba(var(--fg-color), 0.125);
-      grid-area: t;
-      min-width: 2.25rem;
-      height: 2.25rem;
-    }
-    &__header {
-      display: flex;
-      grid-area: h;
-      grid-gap: 0.5rem;
-      font-size: 0.75rem;
-      overflow: hidden;
-    }
-    &__detail {
-      display: none;
-      grid-area: d;
-      grid-gap: 0.5rem;
-      font-size: 0.75rem;
-    }
-    &__body {
-      display: flex;
-      align-items: center;
-      grid-area: b;
-      grid-gap: 0.25rem;
-      overflow: hidden;
-    }
-    &__item {
-      overflow: hidden;
-      white-space: nowrap;
-      &.id {
-        color: rgba(var(--fg-color), 0.375);
-      }
-      &.pubkey {
-        color: rgba(var(--fg-color), 0.375);
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      &.received_at {
-        display: none;
-      }
-      &.created_at {
-        color: rgba(var(--fg-color), 0.5);
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      &.kind {
-        // text-align: center;
-      }
-      &.tags {
-        color: rgba(var(--fg-color), 0.375);
-      }
-      &.content {
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      &.sig {
-        color: rgba(var(--fg-color), 0.375);
-      }
-      &.relay {
-        color: rgba(var(--fg-color), 0.375);
-        display: flex;
-        align-items: center;
-        grid-gap: 0.25rem;
-        margin-left: auto;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        :global(svg) {
-          fill: rgba(var(--fg-color), 0.375);
-        }
-      }
-      &.reply {
-        display: flex;
-        align-items: center;
-        min-width: 1rem;
-        :global(svg) {
-          fill: rgba(var(--fg-color), 0.25);
-        }
-      }
-      &.menu {
-        display: none;
-        grid-gap: 0.25rem;
-        font-size: 0.5rem;
-      }
-    }
+.event {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "i t"
+    "i b";
+  grid-gap: 0.375rem 0.5rem;
+  &[data-reply="true"] {
+    padding-left: 1.125rem;
   }
+}
+
+.thumbnail {
+  border: 1px solid rgba(var(--fg-color), 0.125);
+  border-radius: 1px;
+  font-size: 0;
+  grid-area: i;
+  overflow: hidden;
+  min-width: 2.625rem;
+  height: 2.625rem;
+  text-indent: 100%;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  grid-area: t;
+  grid-gap: 0.25rem;
+  overflow: hidden;
+}
+
+.bottom {
+  display: flex;
+  grid-area: b;
+  grid-gap: 0.5rem;
+  font-size: 0.75rem;
+  overflow: hidden;
+}
+
+.pubkey {
+  color: rgba(var(--fg-color), 0.5);
+  border-radius: 1px;
+  padding: 0 0.25rem;
+  white-space: nowrap;
+}
+
+.received_at {
+  color: rgba(var(--fg-color), 0.5);
+  display: none;
+  white-space: nowrap;
+}
+
+.created_at {
+  color: rgba(var(--fg-color), 0.5);
+  white-space: nowrap;
+}
+
+.reply {
+  display: flex;
+  align-items: center;
+  min-width: 1rem;
+  :global(svg) {
+    fill: rgba(var(--fg-color), 0.25);
+  }
+}
+
+.content {
+  line-height: 1.375rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.relay {
+  color: rgba(var(--fg-color), 0.375);
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-button {
+  background-color: transparent;
+  font-size: 0.5rem;
+  margin-left: auto;
+  padding: 0 0.5rem;
+  height: 100%;
+  :global(svg) {
+    fill: rgba(var(--access-color), 0.5);
+  }
+}
+
+.menu {
+  display: none;
+  grid-gap: 0.25rem;
+  font-size: 0.5rem;
 }
 </style>

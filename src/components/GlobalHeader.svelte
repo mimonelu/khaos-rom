@@ -1,17 +1,16 @@
 <script>
 import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
+import RelayAntenna from "$/components/RelayAntenna.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
 </script>
 
 <div class="container">
   <div class="inner">
     <div class="top">
-      <h1 class="logo">O</h1>
-      <div class="relay-statuses">
-      {#each $nostrStore.relays as relay}
-        <div data-status="{relay.status}"/>
-      {/each}
+      <h1 class="logo">Khaos ROM</h1>
+      <div class="relay-antenna">
+        <RelayAntenna />
       </div>
       <a
         class="button"
@@ -33,15 +32,15 @@ import SVGIcon from "$/components/SVGIcon.svelte"
       </button>
     </div>
     <div class="bottom">
-      <figure>
+      <figure class="icon-text">
         <SVGIcon name="event" />
         <figcaption>{$nostrStore.totalNumberOfDisplayEvents.toLocaleString()} / {$nostrStore.totalNumberOfUniqueEvents.toLocaleString()} / {$nostrStore.totalNumberOfReceivedEvents.toLocaleString()}</figcaption>
       </figure>
-      <figure>
-        <SVGIcon name="block" />
+      <figure class="icon-text">
+        <SVGIcon name="traffic" />
         <figcaption>{($nostrStore.totalTraffic / 1024 / 1024).toFixed(2).toLocaleString()} MB</figcaption>
       </figure>
-      <figure>
+      <figure class="icon-text">
         <SVGIcon name="block" />
         <figcaption>{$blockStore.size}</figcaption>
       </figure>
@@ -50,6 +49,8 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 </div>
 
 <style lang="scss">
+@import "../scss/variables";
+
 .container {
   background-color: rgba(var(--bg-color), 0.5);
   backdrop-filter: blur(4px);
@@ -68,18 +69,12 @@ import SVGIcon from "$/components/SVGIcon.svelte"
   grid-gap: 0.5rem;
   margin: auto;
   padding: 1rem;
-  max-width: var(--max-width);
+  max-width: $max-width;
 }
 
 .top {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  grid-gap: 1rem;
-
-  h1 + * {
-    margin-left: auto;
-  }
+  grid-gap: 0.5rem;
 }
 
 .bottom {
@@ -88,41 +83,22 @@ import SVGIcon from "$/components/SVGIcon.svelte"
   justify-content: flex-end;
   grid-gap: 1rem;
   font-size: 0.75rem;
-
-  figure {
-    display: flex;
-    align-items: center;
-    grid-gap: 0.5rem;
-
-    :global(svg) {
-      fill: rgb(var(--fg-color));
-    }
-  }
 }
 
 .logo {
-  box-shadow: 0 0 0 0.125rem rgb(var(--accent-color)) inset;
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(var(--accent-color), 0.125) inset;
   color: rgb(var(--accent-color));
+  display: flex;
+  align-items: center;
   font-weight: bold;
-  padding: 0.25rem 0.75rem;
+  padding: 0 0.75rem;
+  text-shadow: 0 0 4px rgb(var(--accent-color));
   white-space: nowrap;
 }
 
-.relay-statuses {
+.relay-antenna {
   display: flex;
-  grid-gap: 0.25rem;
-  & > * {
-    width: 0.25rem;
-    height: 1.875rem;
-  }
-  [data-status="disconnected"] {
-    background-color: rgba(var(--fg-color), 0.25);
-  }
-  [data-status="connecting"] {
-    background-color: rgb(var(--fg-color));
-  }
-  [data-status="connected"] {
-    background-color: rgb(var(--accent-color));
-  }
+  margin-left: auto;
 }
 </style>

@@ -21,7 +21,8 @@ onDestroy(() => {
 
 <div class="container">
   <GlobalHeader />
-  <div class="body">
+  <!-- TODO: この div を取り除きたい -->
+  <div class="event-table">
     <EventTable />
   </div>
   <Title />
@@ -29,15 +30,23 @@ onDestroy(() => {
 </div>
 
 <style lang="scss">
+@import "../scss/variables";
+
 .container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-.body {
+.event-table {
   margin: auto;
-  // width: var(--max-width);
-  max-width: var(--max-width);
+  padding-top: 1rem;
+  max-width: $max-width;
+  @media all and (max-width: $max-width) {
+    min-width: 100vw;
+  }
+  @media all and (min-width: $max-width) {
+    min-width: $max-width;
+  }
 }
 </style>

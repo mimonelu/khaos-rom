@@ -3,10 +3,13 @@
 import block from "$/assets/svg/cancel.svg?raw"
 import clock from "$/assets/svg/clock-outline.svg?raw"
 import connect from "$/assets/svg/power-plug-outline.svg?raw"
+import cursorDown from "$/assets/svg/menu-down.svg?raw"
 import disconnect from "$/assets/svg/power-plug-off-outline.svg?raw"
 import event from "$/assets/svg/message-fast-outline.svg?raw"
+import menu from "$/assets/svg/menu.svg?raw"
 import relay from "$/assets/svg/transit-connection.svg?raw"
 import reply from "$/assets/svg/arrow-up-bold-outline.svg?raw"
+import traffic from "$/assets/svg/cloud-download-outline.svg?raw"
 
 export let name = ""
 
@@ -14,10 +17,13 @@ const icons = {
   block,
   clock,
   connect,
+  cursorDown,
   disconnect,
   event,
+  menu,
   relay,
   reply,
+  traffic,
 }
 </script>
 

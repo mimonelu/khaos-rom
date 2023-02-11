@@ -94,18 +94,27 @@ function create () {
 
   const formatDate = date => format(new Date(date * 1000), "MM/dd HH:mm:ss")
 
+  const regexColor = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i
+
+  function hexToRgb (hex) {
+    const result = regexColor.exec(hex)
+    return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '';
+  }
+
   const addPost = (relay, rawEvent, event) => {
     if (event.kind !== 1) return
     proc(state => {
       if (state.events.has(event.id) || blockStore.hasBlock(event.pubkey)) return
-      const color = event.pubkey.slice(0, 6)
+      const colorHex = event.pubkey.slice(0, 6)
+      const colorRgb = hexToRgb(colorHex)
       const created_at_string = formatDate(event.created_at)
       const received_at = Math.floor(Date.now() / 1000)
       const received_at_string = formatDate(received_at)
       state.events.set(event.id, {
         raw: rawEvent,
         ...event,
-        color,
+        colorHex,
+        colorRgb,
         created_at_string,
         received_at,
         received_at_string,

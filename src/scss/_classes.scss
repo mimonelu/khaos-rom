@@ -1,0 +1,26 @@
+.button {
+  background-color: rgb(var(--access-color));
+  border-radius: 1px;
+  color: rgb(var(--bg-color));
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 0.5rem;
+  font-weight: bold;
+  padding: 0.75rem 2rem;
+
+  & > svg {
+    fill: rgb(var(--bg-color));
+  }
+}
+
+.icon-text {
+  display: flex;
+  align-items: center;
+  grid-gap: 0.5rem;
+
+  & > svg {
+    fill: rgb(var(--fg-color));
+  }
+}
