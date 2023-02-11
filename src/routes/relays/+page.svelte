@@ -1,13 +1,16 @@
 <script>
 import { onMount } from "svelte"
+import { disableScrollHandling } from "$app/navigation"
 import nostrStore from "$/store/nostr.js"
 
 onMount(() => {
+  disableScrollHandling()
 })
 </script>
 
 <div class="container">
   <div class="inner">
+    relay
   </div>
 </div>
 

@@ -53,6 +53,7 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 .container {
   background-color: rgba(var(--bg-color), 0.5);
   backdrop-filter: blur(4px);
+  border-bottom: 1px solid rgba(var(--fg-color), 0.125);
   font-weight: bold;
   position: sticky;
   left: 0;
@@ -84,7 +85,7 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 .bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   grid-gap: 1rem;
   font-size: 0.75rem;
 

@@ -1,5 +1,6 @@
 <script>
 import { onMount } from "svelte"
+import { disableScrollHandling } from "$app/navigation"
 import { page } from "$app/stores"
 import nostrStore from "$/store/nostr.js"
 
@@ -14,6 +15,7 @@ let picture = ""
 let website = ""
 
 onMount(() => {
+  disableScrollHandling()
   nostrStore.retrieveProfile(relayUrl, pubkey, profile => {
     about = profile.about ?? ""
     banner = profile.banner ?? ""

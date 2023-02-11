@@ -6,7 +6,7 @@ import blockStore from "$/store/block.js"
 
 const defaultRelayUrls = [
   "relay.damus.io",
-  // - "eden.nostr.land",
+  "eden.nostr.land",
   "relay.snort.social",
   // - "nostr.orangepill.dev",
   "nos.lol",
@@ -98,7 +98,7 @@ function create () {
     if (event.kind !== 1) return
     proc(state => {
       if (state.events.has(event.id) || blockStore.hasBlock(event.pubkey)) return
-      const color = event.pubkey.slice(0, 3)
+      const color = event.pubkey.slice(0, 6)
       const created_at_string = formatDate(event.created_at)
       const received_at = Math.floor(Date.now() / 1000)
       const received_at_string = formatDate(received_at)

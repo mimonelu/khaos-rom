@@ -21,12 +21,9 @@ function openProfile (event) {
   >
     <div class="event__thumbnail" style="{`border-color: #${event.color};`}" />
     <div class="event__header">
+      <div class="event__item pubkey" title="{event.pubkey}">{event.color}</div>
       <div class="event__item received_at" title="{event.received_at}">{event.received_at_string}</div>
-      <div class="event__item created_at" title="{event.created_at}">
-        <SVGIcon name="clock" />
-        <span>{event.created_at_string}</span>
-      </div>
-      <div class="event__item pubkey" title="{event.pubkey}">{event.pubkey}</div>
+      <div class="event__item created_at" title="{event.created_at}">{event.created_at_string}</div>
       <div class="event__item relay" title="{event.relay}">
         <SVGIcon name="relay" />
         <span>{event.relay}</span>
@@ -119,21 +116,14 @@ function openProfile (event) {
         color: rgba(var(--fg-color), 0.375);
         overflow: hidden;
         text-overflow: ellipsis;
-        width: 8rem;
       }
       &.received_at {
         display: none;
       }
       &.created_at {
         color: rgba(var(--fg-color), 0.5);
-        display: flex;
-        align-items: center;
-        grid-gap: 0.25rem;
         overflow: hidden;
         text-overflow: ellipsis;
-        :global(svg) {
-          fill: rgba(var(--fg-color), 0.5);
-        }
       }
       &.kind {
         // text-align: center;
