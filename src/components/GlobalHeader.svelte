@@ -1,27 +1,33 @@
 <script>
 import blockStore from "$/store/block.js"
-import nostraStore from "$/store/nostra.js"
+import nostrStore from "$/store/nostr.js"
 import SVGIcon from "$/components/SVGIcon.svelte"
 </script>
 
 <div class="container">
   <div class="inner">
     <div class="top">
-      <h1 class="logo">Khaos ROM</h1>
+      <h1 class="logo">O</h1>
       <div class="relay-statuses">
-      {#each $nostraStore.relayStatuses as status}
-        <div data-status="{status}"/>
+      {#each $nostrStore.relays as relay}
+        <div data-status="{relay.status}"/>
       {/each}
       </div>
+      <a
+        class="button"
+        href="/relays"
+      >
+        <SVGIcon name="relay" />
+      </a>
       <button
         class="button"
-        on:click="{() => nostraStore.disconnectAll()}"
+        on:click="{() => nostrStore.disconnectPostAll()}"
       >
         <SVGIcon name="disconnect" />
       </button>
       <button
         class="button"
-        on:click="{() => nostraStore.connectAll()}"
+        on:click="{() => nostrStore.connectPostAll()}"
       >
         <SVGIcon name="connect" />
       </button>
@@ -29,7 +35,11 @@ import SVGIcon from "$/components/SVGIcon.svelte"
     <div class="bottom">
       <figure>
         <SVGIcon name="event" />
-        <figcaption>{$nostraStore.displayEvents.length} / {$nostraStore.events.size} / {$nostraStore.totalNumberOfReceivedEvents}</figcaption>
+        <figcaption>{$nostrStore.totalNumberOfDisplayEvents.toLocaleString()} / {$nostrStore.totalNumberOfUniqueEvents.toLocaleString()} / {$nostrStore.totalNumberOfReceivedEvents.toLocaleString()}</figcaption>
+      </figure>
+      <figure>
+        <SVGIcon name="block" />
+        <figcaption>{($nostrStore.totalTraffic / 1024 / 1024).toFixed(2).toLocaleString()} MB</figcaption>
       </figure>
       <figure>
         <SVGIcon name="block" />
@@ -54,7 +64,7 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 .inner {
   display: flex;
   flex-direction: column;
-  grid-gap: 1rem;
+  grid-gap: 0.5rem;
   margin: auto;
   padding: 1rem;
   max-width: var(--max-width);
@@ -76,6 +86,7 @@ import SVGIcon from "$/components/SVGIcon.svelte"
   align-items: center;
   justify-content: space-between;
   grid-gap: 1rem;
+  font-size: 0.75rem;
 
   figure {
     display: flex;
@@ -92,7 +103,7 @@ import SVGIcon from "$/components/SVGIcon.svelte"
   box-shadow: 0 0 0 0.125rem rgb(var(--accent-color)) inset;
   color: rgb(var(--accent-color));
   font-weight: bold;
-  padding: 0.25rem 1rem;
+  padding: 0.25rem 0.75rem;
   white-space: nowrap;
 }
 

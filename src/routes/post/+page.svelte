@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte"
 import { page } from "$app/stores"
-import nostraStore from "$/store/nostra.js"
+import nostrStore from "$/store/nostr.js"
 
 const relayUrl = $page.url.searchParams.get("relay")
 const pubkey = $page.url.searchParams.get("pubkey")
@@ -14,7 +14,7 @@ let picture = ""
 let website = ""
 
 onMount(() => {
-  nostraStore.inquireProfile(relayUrl, pubkey, profile => {
+  nostrStore.retrieveProfile(relayUrl, pubkey, profile => {
     about = profile.about ?? ""
     banner = profile.banner ?? ""
     displayName = profile.display_name ?? ""
@@ -22,8 +22,6 @@ onMount(() => {
     name = profile.name ?? ""
     picture = profile.picture ?? ""
     website = profile.website ?? ""
-  }, () => {
-    //
   })
 })
 </script>

@@ -6,7 +6,7 @@ import connect from "$/assets/svg/power-plug-outline.svg?raw"
 import disconnect from "$/assets/svg/power-plug-off-outline.svg?raw"
 import event from "$/assets/svg/message-fast-outline.svg?raw"
 import relay from "$/assets/svg/transit-connection.svg?raw"
-import reply from "$/assets/svg/arrow-down-bold-outline.svg?raw"
+import reply from "$/assets/svg/arrow-up-bold-outline.svg?raw"
 
 export let name = ""
 

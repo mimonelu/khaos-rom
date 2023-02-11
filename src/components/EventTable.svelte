@@ -1,51 +1,56 @@
 <script>
 import blockStore from "$/store/block.js"
-import nostraStore from "$/store/nostra.js"
+import nostrStore from "$/store/nostr.js"
 import SVGIcon from "$/components/SVGIcon.svelte"
 
 function openPost (event) {
-  window.open(`https://iris.to/#/post/${event.src.id}`)
+  window.open(`https://iris.to/#/post/${event.id}`)
 }
 
 function openProfile (event) {
-  window.open(`https://iris.to/#/profile/${event.src.pubkey}`)
+  window.open(`https://iris.to/#/profile/${event.pubkey}`)
 }
 </script>
 
 <div class="container">
-{#each $nostraStore.displayEvents as event}
+{#each $nostrStore.displayEvents as event}
   <a
     class="event"
-    href="{`/post?relay=${event.relay}&pubkey=${event.src.pubkey}`}"
+    data-reply="{event.replyStatus === 1}"
+    href="{`/post?relay=${event.relay}&pubkey=${event.pubkey}`}"
   >
     <div class="event__thumbnail" style="{`border-color: #${event.color};`}" />
     <div class="event__header">
-      <div class="event__item received_at" title="{event.src.received_at}">{event.received_at}</div>
-      <div class="event__item created_at" title="{event.src.created_at}">
+      <div class="event__item received_at" title="{event.received_at}">{event.received_at_string}</div>
+      <div class="event__item created_at" title="{event.created_at}">
         <SVGIcon name="clock" />
-        <span>{event.created_at}</span>
+        <span>{event.created_at_string}</span>
       </div>
-      <div class="event__item pubkey" title="{event.src.pubkey}">{event.src.pubkey}</div>
+      <div class="event__item pubkey" title="{event.pubkey}">{event.pubkey}</div>
       <div class="event__item relay" title="{event.relay}">
         <SVGIcon name="relay" />
         <span>{event.relay}</span>
       </div>
     </div>
     <div class="event__detail">
-      <div class="event__item id" title="{event.src.id}">{event.src.id}</div>
-      <div class="event__item kind" title="{event.src.kind}">{event.src.kind}</div>
-      <div class="event__item tags" title="{event.src.tags}">{event.src.tags}</div>
-      <div class="event__item sig" title="{event.src.sig}">{event.src.sig}</div>
+      <div class="event__item id" title="{event.id}">{event.id}</div>
+      <div class="event__item kind" title="{event.kind}">{event.kind}</div>
+      <div class="event__item tags" title="{event.tags}">{event.tags}</div>
+      <div class="event__item sig" title="{event.sig}">{event.sig}</div>
     </div>
     <div class="event__body">
-    {#if event.src.tags.length !== 0}
+    {#if event.replyStatus === 1}
       <div class="event__item reply">
         <SVGIcon name="reply" />
       </div>
+    {:else if event.replyStatus === 2}
+      <div class="event__item reply">
+        <SVGIcon name="block" />
+      </div>
     {/if}
-      <div class="event__item content" title="{event.src.content}">{event.src.content}</div>
+      <div class="event__item content" title="{event.content}">{event.content}</div>
       <div class="event__item menu">
-      {#if event.src.kind === 1}
+      {#if event.kind === 1}
         <button class="button" on:click="{() => openPost(event)}">Post</button>
         <button class="button" on:click="{() => openProfile(event)}">Profile</button>
         <button class="button" on:click="{() => blockStore.addBlock(event)}">
@@ -68,23 +73,28 @@ function openProfile (event) {
 
   .event {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr;
     grid-template-areas:
-      "t h"
-      "t b";
+      "t b"
+      "t h";
     grid-gap: 0.5rem;
     padding-top: 0.5rem;
+    &[data-reply="true"] {
+      padding-left: 1.125rem;
+    }
 
     &__thumbnail {
       border: 1px solid rgba(var(--fg-color), 0.125);
       grid-area: t;
-      width: 2.25rem;
+      min-width: 2.25rem;
+      height: 2.25rem;
     }
     &__header {
       display: flex;
       grid-area: h;
       grid-gap: 0.5rem;
       font-size: 0.75rem;
+      overflow: hidden;
     }
     &__detail {
       display: none;
@@ -100,6 +110,7 @@ function openProfile (event) {
       overflow: hidden;
     }
     &__item {
+      overflow: hidden;
       white-space: nowrap;
       &.id {
         color: rgba(var(--fg-color), 0.375);
@@ -152,6 +163,7 @@ function openProfile (event) {
       &.reply {
         display: flex;
         align-items: center;
+        min-width: 1rem;
         :global(svg) {
           fill: rgba(var(--fg-color), 0.25);
         }

@@ -4,18 +4,18 @@ import "$/scss/main.scss"
 
 import { onMount, onDestroy } from "svelte"
 import blockStore from "$/store/block.js"
-import nostraStore from "$/store/nostra.js"
+import nostrStore from "$/store/nostr.js"
 import EventTable from "$/components/EventTable.svelte"
 import GlobalHeader from "$/components/GlobalHeader.svelte"
 import Title from "$/components/Title.svelte"
 
-onMount(async () => {
+onMount(() => {
   blockStore.loadBlocks()
-  // await nostraStore.connectAll()
+  nostrStore.setupRelay()
 })
 
-onDestroy(async () => {
-  await nostraStore.disconnectAll()
+onDestroy(() => {
+  nostrStore.disconnectPostAll()
 })
 </script>
 
@@ -37,7 +37,7 @@ onDestroy(async () => {
 
 .body {
   margin: auto;
-  width: var(--max-width);
+  // width: var(--max-width);
   max-width: var(--max-width);
 }
 </style>

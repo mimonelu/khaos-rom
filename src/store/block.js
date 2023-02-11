@@ -2,6 +2,14 @@ import { writable } from "svelte/store"
 
 function create () {
   const { subscribe, set, update } = writable(new Set())
+
+  const proc = callback => {
+    update(state => {
+      callback(state)
+      return state
+    })
+  }
+
   return {
     subscribe,
 
@@ -13,19 +21,25 @@ function create () {
     },
 
     saveBlocks () {
-      update(context => {
+      proc(state => {
         const blocksArray = []
-        context.forEach(block => blocksArray.push(block))
+        state.forEach(block => blocksArray.push(block))
         localStorage.setItem("blocks", JSON.stringify(blocksArray))
-        return context
       })
     },
 
+    hasBlock (id) {
+      let result = false
+      proc(state => {
+        result = state.has(id)
+      })
+      return result
+    },
+
     addBlock (event) {
-      update(context => {
-        context.add(event.pubkey)
+      proc(state => {
+        state.add(event.pubkey)
         this.saveBlocks()
-        return context
       })
     },
   }

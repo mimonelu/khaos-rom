@@ -1,5 +1,5 @@
 <script>
-import nostraStore from "$/store/nostra.js"
+import nostrStore from "$/store/nostr.js"
 import SVGIcon from "$/components/SVGIcon.svelte"
 </script>
 
@@ -8,7 +8,7 @@ import SVGIcon from "$/components/SVGIcon.svelte"
   <p>Khaos ROM is nostr global viewer.</p>
   <button
     class="button"
-    on:click="{() => nostraStore.connectAll()}"
+    on:click="{() => nostrStore.connectPostAll()}"
   >
     <SVGIcon name="connect" />
     <span>Connect to start</span>
