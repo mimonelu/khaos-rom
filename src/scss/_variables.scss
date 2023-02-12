@@ -1,1 +1,10 @@
-$max-width: 768px;
+$max-width: 640px; // 768px
+
+@mixin scroll-bar () {
+  &::-webkit-scrollbar {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--fg-color), 0.25);
+  }
+}

@@ -9,23 +9,23 @@ import SVGIcon from "$/components/SVGIcon.svelte"
   <div class="inner">
     <div class="top">
       <h1 class="logo">Khaos ROM</h1>
+      <a
+        class="button--outline"
+        href="/relays"
+      >
+        <SVGIcon name="setting" />
+      </a>
       <div class="relay-antenna">
         <RelayAntenna />
       </div>
-      <a
-        class="button"
-        href="/relays"
-      >
-        <SVGIcon name="relay" />
-      </a>
       <button
-        class="button"
+        class="button--red"
         on:click="{() => nostrStore.disconnectPostAll()}"
       >
         <SVGIcon name="disconnect" />
       </button>
       <button
-        class="button"
+        class="button--plane"
         on:click="{() => nostrStore.connectPostAll()}"
       >
         <SVGIcon name="connect" />
@@ -75,6 +75,9 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 .top {
   display: flex;
   grid-gap: 0.5rem;
+  .button--outline {
+    padding: 0.75rem;
+  }
 }
 
 .bottom {
@@ -86,8 +89,6 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 }
 
 .logo {
-  border-radius: 1px;
-  box-shadow: 0 0 0 1px rgba(var(--accent-color), 0.125) inset;
   color: rgb(var(--accent-color));
   display: flex;
   align-items: center;

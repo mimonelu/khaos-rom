@@ -44,6 +44,7 @@ onDestroy(() => {
   max-width: $max-width;
   @media all and (max-width: $max-width) {
     min-width: 100vw;
+    max-width: 100vw;
   }
   @media all and (min-width: $max-width) {
     min-width: $max-width;

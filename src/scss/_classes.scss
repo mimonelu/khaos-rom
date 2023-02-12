@@ -1,7 +1,8 @@
-.button {
-  background-color: rgb(var(--access-color));
+.button--plane,
+.button--red,
+.button--outline {
+  border: 1px solid transparent;
   border-radius: 1px;
-  color: rgb(var(--bg-color));
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -9,9 +10,25 @@
   grid-gap: 0.5rem;
   font-weight: bold;
   padding: 0.75rem 2rem;
-
   & > svg {
     fill: rgb(var(--bg-color));
+  }
+}
+.button--plane {
+  background-color: rgb(var(--access-color));
+  color: rgb(var(--bg-color));
+}
+.button--red {
+  background-color: rgb(var(--notice-color));
+  & > svg {
+    fill: rgb(var(--fg-color));
+  }
+}
+.button--outline {
+  border-color: rgb(var(--access-color));
+  color: rgb(var(--access-color));
+  & > svg {
+    fill: rgb(var(--access-color));
   }
 }
 
@@ -19,8 +36,14 @@
   display: flex;
   align-items: center;
   grid-gap: 0.5rem;
-
   & > svg {
     fill: rgb(var(--fg-color));
+  }
+}
+
+.text-link {
+  color: rgb(var(--access-color));
+  &:hover {
+    text-decoration: underline;
   }
 }

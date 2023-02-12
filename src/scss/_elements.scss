@@ -11,6 +11,7 @@ body {
   --fg-color: 240, 240, 240;
   --access-color: 24, 240, 24;
   --accent-color: 240, 48, 240;
+  --notice-color: 240, 48, 48;
 
   background-color: rgb(var(--bg-color));
   color: rgb(var(--fg-color));
@@ -23,10 +24,5 @@ body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   user-select: none;
-  &::-webkit-scrollbar {
-    background-color: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(var(--fg-color), 0.5);
-  }
+  @include scroll-bar();
 }

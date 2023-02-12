@@ -31,7 +31,7 @@ onMount(() => {
 <div class="container">
   <div class="inner">
     <a
-      class="button close-button"
+      class="button--outline close-button"
       href="/"
     >Close</a>
     <div

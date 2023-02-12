@@ -1,7 +1,7 @@
 import { arrayMoveMutable } from "array-move"
 import { format } from "date-fns"
 import { writable } from "svelte/store"
-import { relayInit } from "nostr-tools"
+import { nip19, relayInit } from "nostr-tools"
 import blockStore from "$/store/block.js"
 
 const defaultRelayUrls = [
@@ -13,12 +13,15 @@ const defaultRelayUrls = [
   "relay.current.fyi",
   // - "brb.io",
   "relay.nostr.wirednet.jp",
+  "relay-jp.nostr.wirednet.jp",
+  "nostr.h3z.jp",
+  "nostr-relay.nokotaro.com",
 ]
 
 const regexJP = /[\u3041-\u3096]|[\u30A1-\u30FA]/
 
 function create () {
-  const { subscribe, update } = writable({
+  const { set, subscribe, update } = writable({
     displayEvents: [],
     events: new Map(),
     relays: [],
@@ -96,31 +99,49 @@ function create () {
 
   const regexColor = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i
 
-  function hexToRgb (hex) {
+  const hexToRgb = hex => {
     const result = regexColor.exec(hex)
     return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '';
   }
 
-  const addPost = (relay, rawEvent, event) => {
+  const httpRegex = /(https?:\/\/[^\s\]]+)/g
+
+  const parseContentAsHtml = content => {
+    const results = content.split(httpRegex)
+      .filter(data => !!data)
+      .map(data => {
+        const type = data.match(httpRegex) ? 'url' : 'text'
+        return { type, data }
+      })
+    return results
+  }
+
+  const addPost = (relay, rawEvent, event, eventString) => {
     if (event.kind !== 1) return
     proc(state => {
       if (state.events.has(event.id) || blockStore.hasBlock(event.pubkey)) return
+      const noteId = nip19.noteEncode(event.id)
       const colorHex = event.pubkey.slice(0, 6)
       const colorRgb = hexToRgb(colorHex)
       const created_at_string = formatDate(event.created_at)
       const received_at = Math.floor(Date.now() / 1000)
       const received_at_string = formatDate(received_at)
+      const contentHtml = parseContentAsHtml(event.content)
       state.events.set(event.id, {
         raw: rawEvent,
         ...event,
+        eventString,
+        noteId,
         colorHex,
         colorRgb,
+        contentHtml,
         created_at_string,
         received_at,
         received_at_string,
         relay: relay.url,
         replyId: null,
         replyStatus: 0,
+        folded: true,
       })
     })
   }
@@ -143,14 +164,6 @@ function create () {
             : 0
       })
       state.events = new Map(events)
-    })
-  }
-
-  const updateDisplayEvents = () => {
-    proc(state => {
-      state.displayEvents = Array.from(state.events.values())
-        .reverse()
-        .filter(event => event.content.match(regexJP))
     })
   }
 
@@ -195,6 +208,7 @@ function create () {
   }
 
   return {
+    set,
     subscribe,
 
     setupRelay () {
@@ -219,12 +233,12 @@ function create () {
       proc(state => {
         state.relays.forEach(relay => {
           connectPermanent(relay, query, rawEvent => {
-            const eventString = JSON.stringify(rawEvent)
+            const eventString = JSON.stringify(rawEvent, null, 2)
             const event = sanitizeEvent(eventString)
-            addPost(relay, event, rawEvent)
+            addPost(relay, rawEvent, event, eventString)
             addTrafic(relay, eventString)
             sortEvents()
-            updateDisplayEvents()
+            this.updateDisplayEvents()
             updateReplys()
             updateTotalNumbers()
           })
@@ -240,6 +254,14 @@ function create () {
       })
     },
 
+    updateDisplayEvents () {
+      proc(state => {
+        state.displayEvents = Array.from(state.events.values())
+          .filter(event => !blockStore.hasBlock(event.pubkey) && event.content.match(regexJP))
+          .reverse()
+      })
+    },
+
     retrieveProfile (relayUrl, pubkey, onSuccess) {
       const query = {
         kinds: [0],
@@ -250,7 +272,7 @@ function create () {
         const event = sanitizeEvent(eventString)
         onSuccess(JSON.parse(event.content ?? ""))
       })
-    }
+    },
   }
 }
 

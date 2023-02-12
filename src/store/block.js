@@ -28,17 +28,17 @@ function create () {
       })
     },
 
-    hasBlock (id) {
+    hasBlock (pubkey) {
       let result = false
       proc(state => {
-        result = state.has(id)
+        result = state.has(pubkey)
       })
       return result
     },
 
-    addBlock (event) {
+    addBlock (pubkey) {
       proc(state => {
-        state.add(event.pubkey)
+        state.add(pubkey)
         this.saveBlocks()
       })
     },
