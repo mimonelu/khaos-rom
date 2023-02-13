@@ -1,4 +1,3 @@
-import { arrayMoveMutable } from "array-move"
 import { format } from "date-fns"
 import { writable } from "svelte/store"
 import { nip19, relayInit } from "nostr-tools"

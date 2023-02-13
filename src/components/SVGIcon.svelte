@@ -33,9 +33,15 @@ const icons = {
 }
 </script>
 
+<div class="svg-icon">
 {#if icons[name]}{@html icons[name]}{/if}
+</div>
 
 <style>
+.svg-icon {
+  display: contents;
+}
+
 :global(svg) {
   min-width: 1em;
   height: 1em;

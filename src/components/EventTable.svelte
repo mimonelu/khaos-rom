@@ -30,20 +30,15 @@ const blockUser = pubkey => {
         <SVGIcon name="question" />
       </div>
     {/if}
-      <!-- TODO: a11y 対策で無駄な要素を記述しているが、どうにかしたい -->
       <a
         class="thumbnail"
         href="{`/post?relay=${event.relay}&pubkey=${event.pubkey}`}"
         style="{`border-color: #${event.colorHex};`}"
-      >
-        <div />
-      </a>
+      />
     </div>
-    <!-- TODO: a11y 対策で無駄な on:keydown を記述しているが、どうにかしたい -->
     <div
       class="right"
       on:click="{() => openPost(event)}"
-      on:keydown
     >
       <div class="top">
         <div class="content-wrapper">
@@ -102,15 +97,12 @@ const blockUser = pubkey => {
         <div class="image-link">
         {#each event.contentHtml as content}
           {#if content.type === "url"}
-          <!-- TODO: a11y 対策で無駄な要素を記述しているが、どうにかしたい -->
           <a
             href="{content.data}"
             target="_blank"
             rel="noreferrer"
             style="{`background-image: url(${content.data});`}"
-          >
-            <div />
-          </a>
+          />
           {/if}
         {/each}
         </div>

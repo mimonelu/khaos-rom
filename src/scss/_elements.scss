@@ -25,4 +25,7 @@ body {
   -webkit-text-size-adjust: 100%;
   user-select: none;
   @include scroll-bar();
+
+  // TODO: TBD. This is instead of v-cloak.
+  visibility: unset !important;
 }

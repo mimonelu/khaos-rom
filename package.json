@@ -26,7 +26,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"array-move": "^4.0.0",
 		"date-fns": "^2.29.3",
 		"nostr-tools": "^1.2.1",
 		"the-new-css-reset": "^1.8.3"

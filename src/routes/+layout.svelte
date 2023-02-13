@@ -21,7 +21,7 @@ onDestroy(() => {
 
 <div class="container">
   <GlobalHeader />
-  <!-- TODO: この div を取り除きたい -->
+  <!-- TODO: Can you remove this div tag?-->
   <div class="event-table">
     <EventTable />
   </div>
