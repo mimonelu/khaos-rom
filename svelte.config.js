@@ -18,6 +18,7 @@ export default {
       },
       ssr: false,
     }),
+    appDir: "app",
     files: {
       appTemplate: "src/index.html",
     },
