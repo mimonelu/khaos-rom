@@ -12,7 +12,7 @@ export default {
       assets: "docs",
       fallback: "index.html",
       precompress: false,
-      strict: !true,
+      strict: true,
       prerender: {
         enabled: false,
       },

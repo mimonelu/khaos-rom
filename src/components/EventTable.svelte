@@ -32,7 +32,7 @@ const blockUser = pubkey => {
     {/if}
       <a
         class="thumbnail"
-        href="{`/post?relay=${event.relay}&pubkey=${event.pubkey}`}"
+        href="{`/#profile?relay=${event.relay}&pubkey=${event.pubkey}`}"
         style="{`border-color: #${event.colorHex};`}"
       />
     </div>
@@ -158,6 +158,7 @@ const blockUser = pubkey => {
   border-radius: 1px;
   display: flex;
   padding: 0.25rem;
+  pointer-events: none;
   position: absolute;
   :global(svg) {
     fill: rgba(var(--fg-color), 0.5);

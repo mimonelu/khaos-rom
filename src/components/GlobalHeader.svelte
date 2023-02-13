@@ -11,7 +11,7 @@ import SVGIcon from "$/components/SVGIcon.svelte"
       <h1 class="logo">Khaos ROM</h1>
       <a
         class="button--outline"
-        href="/relays"
+        href="#setting"
       >
         <SVGIcon name="setting" />
       </a>
