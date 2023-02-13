@@ -32,7 +32,7 @@ const blockUser = pubkey => {
     {/if}
       <a
         class="thumbnail"
-        href="{`/#profile?relay=${event.relay}&pubkey=${event.pubkey}`}"
+        href="{`#profile?relay=${event.relay}&pubkey=${event.pubkey}`}"
         style="{`border-color: #${event.colorHex};`}"
       />
     </div>
