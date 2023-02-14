@@ -20,13 +20,13 @@ import SVGIcon from "$/components/SVGIcon.svelte"
       </div>
       <button
         class="button--red"
-        on:click="{() => nostrStore.disconnectPostAll()}"
+        on:click="{() => nostrStore.disconnectAll()}"
       >
         <SVGIcon name="disconnect" />
       </button>
       <button
         class="button--plane"
-        on:click="{() => nostrStore.connectPostAll()}"
+        on:click="{() => nostrStore.retrieveGlobalNotes()}"
       >
         <SVGIcon name="connect" />
       </button>

@@ -44,13 +44,34 @@ const blockUser = pubkey => {
         <div class="content-wrapper">
           <div class="content">{event.content}</div>
           <div class="content-html">
-          {#each event.contentHtml as content}
+          {#each event.classifiedContent as content}
             {#if content.type === "text"}
             <span class="content-text">{content.data}</span>
-            {:else if content.type === "url"}
+            {:else if content.type === "url" || content.type === "image"}
             <a
               class="text-link"
               href="{content.data}"
+              target="_blank"
+              rel="noreferrer"
+            >{content.data}</a>
+            {:else if content.type === "tag"}
+            <a
+              class="text-link"
+              href="https://nostrview.com/search?q={encodeURIComponent(content.data)}"
+              target="_blank"
+              rel="noreferrer"
+            >{content.data}</a>
+            {:else if content.type === "npub"}
+            <a
+              class="text-link"
+              href="https://snort.social/p/{content.data}"
+              target="_blank"
+              rel="noreferrer"
+            >{content.data}</a>
+            {:else if content.type === "note"}
+            <a
+              class="text-link"
+              href="https://snort.social/e/{content.data}"
               target="_blank"
               rel="noreferrer"
             >{content.data}</a>
@@ -95,8 +116,8 @@ const blockUser = pubkey => {
           </button>
         </div>
         <div class="image-link">
-        {#each event.contentHtml as content}
-          {#if content.type === "url"}
+        {#each event.classifiedContent as content}
+          {#if content.type === "image"}
           <a
             href="{content.data}"
             target="_blank"

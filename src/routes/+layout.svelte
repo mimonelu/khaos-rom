@@ -18,7 +18,7 @@ onMount(() => {
 })
 
 onDestroy(() => {
-  nostrStore.disconnectPostAll()
+  nostrStore.disconnectAll()
 })
 
 let hash = ""

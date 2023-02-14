@@ -23,7 +23,12 @@ onMount(() => {
     lud06 = profile.lud06 ?? ""
     name = profile.name ?? ""
     picture = profile.picture ?? ""
-    website = profile.website ?? ""
+    // Because some person doesn't write a protocol.
+    website = !profile.website
+      ? ""
+      : /^http/.test(profile.website)
+        ? profile.website
+        : `https://${profile.website}`
   })
 })
 
