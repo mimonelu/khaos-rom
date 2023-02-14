@@ -31,7 +31,7 @@ function create () {
   const { set, subscribe, update } = writable({
     displayEvents: [],
     events: new Map(),
-    relays: [],
+    relays: new Map(),
     totalNumberOfDisplayEvents: 0,
     totalNumberOfUniqueEvents: 0,
     totalNumberOfReceivedEvents: 0,
@@ -42,6 +42,15 @@ function create () {
     update(state => {
       callback(state)
       return state
+    })
+  }
+
+  // `status` will be changed in an asynchronous functions.
+  const updateStatus = (relayUrl, status) => {
+    proc(state => {
+      const relay = state.relays.get(relayUrl)
+      if (!relay) return
+      relay.status = status
     })
   }
 
@@ -131,13 +140,15 @@ function create () {
 
     setupRelay () {
       proc(state => {
-        state.relays = defaultRelayUrls.map(defaultRelayUrl => ({
-          url: defaultRelayUrl,
-          relay: null,
-          status: "disconnected",
-          totalNumberOfDisplayEvents: 0,
-          traffic: 0,
-        }))
+        defaultRelayUrls.forEach(defaultRelayUrl => {
+          state.relays.set(defaultRelayUrl, {
+            url: defaultRelayUrl,
+            relay: null,
+            status: "disconnected",
+            totalNumberOfDisplayEvents: 0,
+            traffic: 0,
+          })
+        })
       })
     },
 
@@ -158,11 +169,11 @@ function create () {
             updateReplys()
             updateTotalNumbers()
           }, () => {
-            relay.status = "connected"
+            updateStatus(relay.url, "connected")
           }, () => {
-            relay.status = "disconnected"
+            updateStatus(relay.url, "disconnected")
           }, () => {
-            relay.status = "disconnected"
+            updateStatus(relay.url, "disconnected")
           })
         })
       })
@@ -171,7 +182,7 @@ function create () {
     disconnectAll () {
       proc(state => {
         state.relays.forEach(relay => {
-          if (relay.relay) relay.relay.close()
+          if (relay.relay && relay.status !== "connecting") relay.relay.close()
         })
       })
     },
@@ -181,6 +192,13 @@ function create () {
         state.displayEvents = Array.from(state.events.values())
           .filter(event => !blockStore.hasBlock(event.pubkey) && event.content.match(regexJP))
           .reverse()
+
+        // TODO:
+        state.relays.forEach(relay => { relay.totalNumberOfDisplayEvents = 0 })
+        state.displayEvents.forEach(event => {
+          const relay = state.relays.get(event.relay)
+          relay.totalNumberOfDisplayEvents += 1
+        })
       })
     },
 

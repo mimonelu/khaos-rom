@@ -4,9 +4,9 @@ const something = "[^\\s\\(\\)\\[\\]]"
 const pattern = {
   url  : `(${protocol}${something}+)`,
   image: `(${protocol}${something}+?\\.(?:gif|jpg|jpeg|png|svg|webp)(?:$|\\?${something}*))`,
-  tag  : `(?<=^|\\s+)(#${something}+)`,
-  npub : "(?<=^|\\s+)(npub[0-9a-z]{59})",
-  note : "(?<=^|\\s+)(note[0-9a-z]{59})",
+  tag  : `((?<=^|\\s+)#${something}+)`,
+  npub : "((?<=^|\\s+|@)npub[0-9a-z]{59})",
+  note : "((?<=^|\\s+|@)note[0-9a-z]{59})",
 }
 
 const regex = {

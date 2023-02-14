@@ -1,9 +1,13 @@
 <script>
 import nostrStore from "$/store/nostr.js"
+
+let relays = []
+
+$: relays = [...$nostrStore.relays.values()]
 </script>
 
 <div class="container">
-{#each $nostrStore.relays as relay}
+{#each relays as relay}
   <div data-status="{relay.status}"/>
 {/each}
 </div>
