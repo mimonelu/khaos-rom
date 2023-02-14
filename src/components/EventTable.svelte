@@ -1,7 +1,9 @@
 <script>
 import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
+import OpenButton from "$/components/OpenButton.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
+import TextLink from "$/components/TextLink.svelte"
 
 const openPost = event => {
   event.folded = !event.folded
@@ -11,6 +13,7 @@ const openPost = event => {
 const blockUser = pubkey => {
   blockStore.addBlock(pubkey)
   nostrStore.updateDisplayEvents()
+  nostrStore.updateReplys()
 }
 </script>
 
@@ -48,68 +51,24 @@ const blockUser = pubkey => {
             {#if content.type === "text"}
             <span class="content-text">{content.data}</span>
             {:else if content.type === "url" || content.type === "image"}
-            <a
-              class="text-link"
-              href="{content.data}"
-              target="_blank"
-              rel="noreferrer"
-            >{content.data}</a>
+            <TextLink url="{content.data}">{content.data}</TextLink>
             {:else if content.type === "tag"}
-            <a
-              class="text-link"
-              href="https://nostrview.com/search?q={encodeURIComponent(content.data)}"
-              target="_blank"
-              rel="noreferrer"
-            >{content.data}</a>
+            <TextLink url="https://nostrview.com/search?q={encodeURIComponent(content.data)}">{content.data}</TextLink>
             {:else if content.type === "npub"}
-            <a
-              class="text-link"
-              href="https://snort.social/p/{content.data}"
-              target="_blank"
-              rel="noreferrer"
-            >{content.data}</a>
+            <TextLink url="https://snort.social/p/{content.data}">{content.data}</TextLink>
             {:else if content.type === "note"}
-            <a
-              class="text-link"
-              href="https://snort.social/e/{content.data}"
-              target="_blank"
-              rel="noreferrer"
-            >{content.data}</a>
+            <TextLink url="https://snort.social/e/{content.data}">{content.data}</TextLink>
             {/if}
           {/each}
           </div>
         </div>
         <div class="menu">
-          <a
-            class="button--outline"
-            href="{`nostr:${event.noteId}`}"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <SVGIcon name="open" />
-            <span>App</span>
-          </a>
-          <a
-            class="button--outline"
-            href="{`https://iris.to/post/${event.id}`}"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <SVGIcon name="open" />
-            <span>iris</span>
-          </a>
-          <a
-            class="button--outline"
-            href="{`https://snort.social/e/${event.noteId}`}"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <SVGIcon name="open" />
-            <span>snort</span>
-          </a>
+          <OpenButton url="{`nostr:${event.noteId}`}">App</OpenButton>
+          <OpenButton url="{`https://iris.to/post/${event.id}`}">iris</OpenButton>
+          <OpenButton url="{`https://snort.social/e/${event.noteId}`}">snort</OpenButton>
           <button
             class="button--red"
-            on:click="{() => blockUser(event.pubkey)}"
+            on:click|stopPropagation="{() => blockUser(event.pubkey)}"
           >
             <SVGIcon name="block" />
             <span>Block</span>
@@ -127,7 +86,10 @@ const blockUser = pubkey => {
           {/if}
         {/each}
         </div>
-        <code class="raw">{event.eventString}</code>
+        <code
+          class="raw"
+          on:click|stopPropagation
+        >{event.eventString}</code>
       </div>
       <div class="bottom">
         <div
@@ -242,7 +204,7 @@ const blockUser = pubkey => {
 }
 
 .content-text,
-.text-link {
+:global(.text-link) {
   word-break: break-all;
 }
 
@@ -252,13 +214,10 @@ const blockUser = pubkey => {
   [data-folded="true"] & {
     display: none;
   }
-  & > .button--red,
-  & > .button--outline {
-    font-size: 0.75rem;
-    padding: 0.375rem 1rem;
-  }
   & > .button--red {
+    font-size: 0.75rem;
     margin-left: auto;
+    padding: 0.375rem 1rem;
   }
 }
 

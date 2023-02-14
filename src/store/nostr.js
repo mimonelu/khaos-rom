@@ -184,6 +184,8 @@ function create () {
       })
     },
 
+    updateReplys,
+
     retrieveGlobalNotes () {
       this.connectAll([{
         kinds: [1],

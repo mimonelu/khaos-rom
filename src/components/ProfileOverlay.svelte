@@ -2,6 +2,7 @@
 import { onMount } from "svelte"
 import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
+import OpenButton from "$/components/OpenButton.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
 
 export let relay = null
@@ -61,24 +62,8 @@ const blockUser = () => {
         </div>
       </div>
       <div class="menu">
-        <a
-          class="button--outline"
-          href="{`https://iris.to/profile/${pubkey}`}"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <SVGIcon name="open" />
-          <span>iris</span>
-        </a>
-        <a
-          class="button--outline"
-          href="{`https://snort.social/p/${pubkey}`}"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <SVGIcon name="open" />
-          <span>snort</span>
-        </a>
+        <OpenButton url="{`https://iris.to/profile/${pubkey}`}">iris</OpenButton>
+        <OpenButton url="{`https://snort.social/p/${pubkey}`}">snort</OpenButton>
         <button
           class="button--red"
           on:click="{() => blockUser()}"
@@ -215,13 +200,10 @@ const blockUser = () => {
 .menu {
   display: flex;
   grid-gap: 0.5rem;
-  & > .button--red,
-  & > .button--outline {
-    font-size: 0.75rem;
-    padding: 0.375rem 1rem;
-  }
   & > .button--red {
+    font-size: 0.75rem;
     margin-left: auto;
+    padding: 0.375rem 1rem;
   }
 }
 
