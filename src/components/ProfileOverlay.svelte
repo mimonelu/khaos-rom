@@ -105,7 +105,8 @@ const blockUser = () => {
 }
 
 .inner {
-  background-color: rgba(var(--bg-color), 0.75);
+  background-color: rgb(var(--bg-sub-color));
+  border: 1px solid rgba(var(--fg-color), 0.25);
   border-radius: 1px;
   margin-top: 2rem;
   overflow-y: auto;
@@ -163,7 +164,7 @@ const blockUser = () => {
   background-color: rgb(var(--bg-color));
   background-repeat: no-repeat;
   background-size: cover;
-  border: 2px solid rgb(var(--bg-color));
+  border: 1px solid rgb(var(--bg-sub-color));
   border-radius: 1px;
   min-width: 8rem;
 }
@@ -178,7 +179,7 @@ const blockUser = () => {
   color: rgb(var(--accent-color));
   font-size: 1.5rem;
   font-weight: bold;
-  line-height: 1.375;
+  line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
   &:empty {
@@ -189,7 +190,7 @@ const blockUser = () => {
 .name {
   color: rgb(var(--fg-color));
   font-weight: bold;
-  line-height: 1.375;
+  line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
   &:empty {
@@ -209,6 +210,7 @@ const blockUser = () => {
 
 .website {
   color: rgb(var(--access-color));
+  line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
   &:empty {
@@ -234,7 +236,7 @@ const blockUser = () => {
 }
 
 .about {
-  line-height: 1.375;
+  line-height: 1.5;
   white-space: pre-line;
   word-break: break-all;
   &:empty {

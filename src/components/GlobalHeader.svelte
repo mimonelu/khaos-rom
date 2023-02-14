@@ -94,7 +94,6 @@ import SVGIcon from "$/components/SVGIcon.svelte"
   align-items: center;
   font-weight: bold;
   padding: 0 0.75rem;
-  text-shadow: 0 0 4px rgb(var(--accent-color));
   white-space: nowrap;
 }
 

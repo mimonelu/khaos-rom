@@ -45,7 +45,8 @@ $: relays = [...$nostrStore.relays.values()]
 }
 
 .inner {
-  background-color: rgba(var(--bg-color), 0.75);
+  background-color: rgb(var(--bg-sub-color));
+  border: 1px solid rgba(var(--fg-color), 0.125);
   border-radius: 1px;
   margin-top: 2rem;
   overflow-y: auto;
@@ -75,7 +76,7 @@ $: relays = [...$nostrStore.relays.values()]
   display: flex;
   flex-direction: column;
   grid-gap: 1rem;
-  padding: 5rem 1rem 1rem;
+  padding: 5rem 2rem 2rem;
   position: relative;
 }
 

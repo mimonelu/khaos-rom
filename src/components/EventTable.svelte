@@ -94,7 +94,7 @@ const blockUser = pubkey => {
       <div class="bottom">
         <div
           class="pubkey"
-          style="{`background-color: rgba(${event.colorRgb}, 0.25);`}"
+          style="{`color: rgb(${event.colorRgb});`}"
         >{event.colorHex}</div>
         <div class="received_at">{event.received_at_string}</div>
         <div class="created_at">{event.created_at_string}</div>
@@ -132,7 +132,7 @@ const blockUser = pubkey => {
   align-items: center;
   min-width: 1rem;
   :global(svg) {
-    fill: rgba(var(--fg-color), 0.5);
+    fill: rgb(var(--fg-color));
   }
 }
 
@@ -144,12 +144,12 @@ const blockUser = pubkey => {
   pointer-events: none;
   position: absolute;
   :global(svg) {
-    fill: rgba(var(--fg-color), 0.5);
+    fill: rgb(var(--fg-color));
   }
 }
 
 .thumbnail {
-  border: 1px solid rgba(var(--fg-color), 0.125);
+  border: 1px solid transparent;
   border-radius: 1px;
   overflow: hidden;
   min-width: 2.75rem;
@@ -182,7 +182,7 @@ const blockUser = pubkey => {
 
 .content {
   [data-folded="true"] & {
-    line-height: 1.375rem;
+    line-height: 1.5rem;
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-all;
@@ -198,7 +198,7 @@ const blockUser = pubkey => {
     display: none;
   }
   [data-folded="false"] & {
-    line-height: 1.375rem;
+    line-height: 1.5rem;
     white-space: pre-line;
   }
 }
@@ -232,7 +232,7 @@ const blockUser = pubkey => {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    border: 1px solid rgba(var(--access-color), 0.25);
+    border: 1px solid rgb(var(--access-color));
     border-radius: 1px;
     display: block;
   }
@@ -264,7 +264,7 @@ const blockUser = pubkey => {
   border-radius: 1px;
   color: greenyellow;
   font-size: 0.75rem;
-  line-height: 1.375;
+  line-height: 1.5;
   overflow-x: auto;
   padding: 1rem;
   user-select: all;
@@ -284,9 +284,6 @@ const blockUser = pubkey => {
 }
 
 .pubkey {
-  color: rgba(var(--fg-color), 0.5);
-  border-radius: 1px;
-  padding: 0 0.25rem;
   white-space: nowrap;
 }
 
@@ -302,7 +299,7 @@ const blockUser = pubkey => {
 }
 
 .relay {
-  color: rgba(var(--fg-color), 0.375);
+  color: rgba(var(--fg-color), 0.5);
   margin-left: auto;
   overflow: hidden;
   text-overflow: ellipsis;

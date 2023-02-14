@@ -11,7 +11,7 @@ const pattern = {
 
 const regex = {
   url  : new RegExp(pattern.url, "g"),
-  image: new RegExp(pattern.image, "g"),
+  image: new RegExp(pattern.image, "gi"),
   tag  : new RegExp(pattern.tag, "g"),
   npub : new RegExp(pattern.npub, "g"),
   note : new RegExp(pattern.note, "g"),

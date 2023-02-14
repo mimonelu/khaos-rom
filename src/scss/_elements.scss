@@ -7,15 +7,16 @@
 }
 
 body {
-  --bg-color: 24, 24, 24;
-  --fg-color: 240, 240, 240;
-  --access-color: 24, 240, 24;
-  --accent-color: 240, 48, 240;
-  --notice-color: 240, 48, 48;
+  --bg-color: 248, 248, 248;
+  --bg-sub-color: 255, 255, 255;
+  --fg-color: 16, 32, 48;
+  --fg-sub-color: 0, 0, 0;
+  --access-color: 0, 160, 240;
+  --accent-color: 224, 32, 224;
+  --notice-color: 240, 32, 32;
 
   background-color: rgb(var(--bg-color));
   color: rgb(var(--fg-color));
-  font-family: "M PLUS Rounded 1c", sans-serif;
   font-feature-settings: "palt";
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -28,4 +29,16 @@ body {
 
   // TODO: TBD. This is instead of v-cloak.
   visibility: unset !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    --bg-color: 16, 20, 24;
+    --bg-sub-color: 8, 12, 16;
+    --fg-color: 224, 224, 224;
+    --fg-sub-color: 255, 255, 255;
+    --access-color: 0, 160, 240;
+    --accent-color: 224, 32, 224;
+    --notice-color: 240, 48, 48;
+  }
 }
