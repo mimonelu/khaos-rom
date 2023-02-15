@@ -158,10 +158,10 @@ function create () {
 
     connectAll (queries) {
       proc(state => {
-        state.relays.forEach(relay => {
+        state.relays.forEach(async relay => {
           if (relay.status !== "disconnected") return
           relay.status = "connecting"
-          relay.relay = connectPermanent(relay.url, queries, rawEvent => {
+          relay.relay = await connectPermanent(relay.url, queries, rawEvent => {
             const eventString = JSON.stringify(rawEvent, null, 2)
             const event = JSON.parse(eventString)
             sanitizeEvent(event)

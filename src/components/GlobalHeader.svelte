@@ -8,7 +8,9 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 <div class="container">
   <div class="inner">
     <div class="top">
-      <h1 class="logo">Khaos ROM</h1>
+      <h1 class="logo">
+        <SVGIcon name="logo" />
+      </h1>
       <a
         class="button--outline"
         href="#setting"
@@ -87,12 +89,12 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 }
 
 .logo {
-  color: rgb(var(--accent-color));
   display: flex;
   align-items: center;
-  font-weight: bold;
   padding: 0 0.75rem;
-  white-space: nowrap;
+  :global(svg) {
+    fill: rgb(var(--fg-color));
+  }
 }
 
 .relay-antenna {

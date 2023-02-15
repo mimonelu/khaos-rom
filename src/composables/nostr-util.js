@@ -1,15 +1,8 @@
 import { relayInit } from "nostr-tools"
 
-export const connectOnce = (url, query, onSuccess, onDisconnect, onError) => {
+export const connectOnce = async (url, query, onSuccess, onDisconnect, onError) => {
   const relay = relayInit(url)
-  const sub = relay.sub([query])
-  sub.on("event", event => {
-    sub.on("eose", () => {
-      console.info(`[O] EOSE (once): ${url}`)
-      sub.unsub()
-    })
-    if (onSuccess) onSuccess(event)
-  })
+  await relay.connect()
   relay.on("connect", () => {
     console.info(`[O] Connect (once): ${url}`)
   })
@@ -21,15 +14,20 @@ export const connectOnce = (url, query, onSuccess, onDisconnect, onError) => {
     console.info(`[O] Error (once): ${url}`)
     if (onError) onError()
   })
-  relay.connect()
+  const sub = relay.sub([query])
+  sub.on("event", event => {
+    sub.on("eose", () => {
+      console.info(`[O] EOSE (once): ${url}`)
+      sub.unsub()
+    })
+    if (onSuccess) onSuccess(event)
+  })
+  return relay
 }
 
-export const connectPermanent = (url, queries, onEvent, onConnected, onDisconnected, onError) => {
+export const connectPermanent = async (url, queries, onEvent, onConnected, onDisconnected, onError) => {
   const relay = relayInit(url)
-  const sub = relay.sub(queries)
-  sub.on("event", event => {
-    if (onEvent) onEvent(event)
-  })
+  await relay.connect()
   relay.on("connect", () => {
     console.info(`[O] Connect (permanent): ${url}`)
     if (onConnected) onConnected()
@@ -42,7 +40,10 @@ export const connectPermanent = (url, queries, onEvent, onConnected, onDisconnec
     console.info(`[O] Error (permanent): ${url}`)
     if (onError) onError()
   })
-  relay.connect()
+  const sub = relay.sub(queries)
+  sub.on("event", event => {
+    if (onEvent) onEvent(event)
+  })
   return relay
 }
 
