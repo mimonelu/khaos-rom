@@ -49,8 +49,6 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 </div>
 
 <style lang="scss">
-@import "../scss/variables";
-
 .container {
   background-color: rgba(var(--bg-color), 0.5);
   backdrop-filter: blur(4px);

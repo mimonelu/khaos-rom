@@ -25,6 +25,9 @@ export default {
   },
   preprocess: [
     sveltePreprocess({
+      scss: {
+        prependData: '@import "../scss/variables";'
+      },
       postcss: {
         plugins: [autoprefixer()],
       },

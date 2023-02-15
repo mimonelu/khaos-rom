@@ -52,8 +52,6 @@ const routeByHash = () => {
 </div>
 
 <style lang="scss">
-@import "../scss/variables";
-
 .container {
   display: flex;
   flex-direction: column;

@@ -64,6 +64,9 @@ function create () {
       const colorHex           = event.pubkey.slice(0, 6)
       const colorRgb           = hexToRgb(colorHex)
       const classifiedContent  = classifyText(event.content)
+      const heroImages         = classifiedContent
+        .filter(content => content.type === "image")
+        .slice(0, 8)
       const created_at_string  = formatDate(event.created_at)
       const received_at        = Math.floor(Date.now() / 1000)
       const received_at_string = formatDate(received_at)
@@ -75,6 +78,7 @@ function create () {
         colorHex,
         colorRgb,
         classifiedContent,
+        heroImages,
         created_at_string,
         received_at,
         received_at_string,

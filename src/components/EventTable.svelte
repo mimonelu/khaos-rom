@@ -75,19 +75,19 @@ const blockUser = pubkey => {
           </button>
         </div>
         <div class="image-link">
-        {#each event.classifiedContent as content}
-          {#if content.type === "image"}
+        {#each event.heroImages as heroImage}
+          {#if heroImage.type === "image"}
           <a
-            href="{content.data}"
+            href="{heroImage.data}"
             target="_blank"
             rel="noreferrer"
-            style="{`background-image: url(${content.data});`}"
+            style="{`background-image: url(${heroImage.data});`}"
           />
           {/if}
         {/each}
         </div>
         <code
-          class="raw"
+          class="console"
           on:click|stopPropagation
         >{event.eventString}</code>
       </div>
@@ -106,8 +106,6 @@ const blockUser = pubkey => {
 </div>
 
 <style lang="scss">
-@import "../scss/variables";
-
 .container {
   display: flex;
   flex-direction: column;
@@ -224,7 +222,7 @@ const blockUser = pubkey => {
 .image-link {
   aspect-ratio: 1.91 / 1;
   display: grid;
-  grid-gap: 0.5rem;
+  grid-gap: 0.25rem;
   [data-folded="true"] & {
     display: none;
   }
@@ -257,23 +255,41 @@ const blockUser = pubkey => {
     & > a:nth-child(3) { grid-area: c; }
     & > a:nth-child(4) { grid-area: d; }
   }
+  &:has(:nth-child(5)) {
+    aspect-ratio: 1.91 / 2;
+    grid-template-areas: "a a" "a a" "b c" "d e";
+    & > a:nth-child(1) { grid-area: a; }
+    & > a:nth-child(2) { grid-area: b; }
+    & > a:nth-child(3) { grid-area: c; }
+    & > a:nth-child(4) { grid-area: d; }
+    & > a:nth-child(5) { grid-area: e; }
+  }
+  &:has(:nth-child(6)) {
+    grid-template-areas: "a b" "a b" "c d" "e f";
+    & > a:nth-child(1) { grid-area: a; }
+    & > a:nth-child(2) { grid-area: b; }
+    & > a:nth-child(3) { grid-area: c; }
+    & > a:nth-child(4) { grid-area: d; }
+    & > a:nth-child(5) { grid-area: e; }
+    & > a:nth-child(6) { grid-area: f; }
+  }
+  &:has(:nth-child(7)) {
+    grid-template-areas: "a b" "a c" "d e" "f g";
+    & > a:nth-child(1) { grid-area: a; }
+    & > a:nth-child(2) { grid-area: b; }
+    & > a:nth-child(3) { grid-area: c; }
+    & > a:nth-child(4) { grid-area: d; }
+    & > a:nth-child(5) { grid-area: e; }
+    & > a:nth-child(6) { grid-area: f; }
+    & > a:nth-child(7) { grid-area: g; }
+  }
+  &:has(:nth-child(8)) {
+    grid-template-areas: "a b" "c d" "e f" "g h";
+  }
 }
 
-.raw {
-  background-color: black;
-  border-radius: 1px;
-  color: greenyellow;
-  font-size: 0.75rem;
-  line-height: 1.5;
-  overflow-x: auto;
-  padding: 1rem;
-  user-select: all;
-  white-space: pre;
-  word-break: break-all;
-  [data-folded="true"] & {
-    display: none;
-  }
-  @include scroll-bar();
+[data-folded="true"] .console {
+  display: none;
 }
 
 .bottom {

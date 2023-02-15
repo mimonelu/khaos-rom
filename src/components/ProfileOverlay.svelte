@@ -86,8 +86,6 @@ const blockUser = () => {
 </div>
 
 <style lang="scss">
-@import "../scss/variables";
-
 .container {
   background-color: rgba(var(--bg-color), 0.75);
   backdrop-filter: blur(4px);

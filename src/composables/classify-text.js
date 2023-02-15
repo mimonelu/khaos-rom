@@ -15,7 +15,7 @@ const regex = {
   tag  : new RegExp(pattern.tag, "g"),
   npub : new RegExp(pattern.npub, "g"),
   note : new RegExp(pattern.note, "g"),
-  all  : new RegExp(`${pattern.url}|${pattern.image}|${pattern.tag}|${pattern.npub}|${pattern.note}`, "g"),
+  all  : new RegExp(`${pattern.note}|${pattern.npub}|${pattern.tag}|${pattern.image}|${pattern.url}`, "g"),
 }
 
 export default text => text

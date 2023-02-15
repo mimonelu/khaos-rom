@@ -49,3 +49,17 @@
     text-decoration: underline;
   }
 }
+
+.console {
+  background-color: black;
+  border-radius: 1px;
+  color: greenyellow;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  padding: 1rem;
+  user-select: all;
+  white-space: pre;
+  word-break: break-all;
+  @include scroll-bar();
+}
