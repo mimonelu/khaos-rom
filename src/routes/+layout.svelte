@@ -7,6 +7,7 @@ import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
 import EventTable from "$/components/EventTable.svelte"
 import GlobalHeader from "$/components/GlobalHeader.svelte"
+import HashRouter from "$/components/HashRouter.svelte"
 import ProfileOverlay from "$/components/ProfileOverlay.svelte"
 import SettingOverlay from "$/components/SettingOverlay.svelte"
 import Title from "$/components/Title.svelte"
@@ -14,26 +15,23 @@ import Title from "$/components/Title.svelte"
 onMount(() => {
   blockStore.loadBlocks()
   nostrStore.setupRelay()
-  routeByHash()
 })
 
 onDestroy(() => {
   nostrStore.disconnectAll()
 })
 
-let hash = ""
-let params = {}
+let router = {
+  hash: "",
+  params: {},
+}
 
-const mapToObject = map => [...map].reduce((l,[k,v]) => Object.assign(l, {[k]:v}), {})
-
-const routeByHash = () => {
-  const items = location.hash.match(/^#(\w+)\??(.*)$/) ?? []
-  hash = items[1] ?? ""
-  params = mapToObject(new Map(items[2] ? items[2].split("&").map(block => block.split("=")) : null))
+const onChangeHash = event => {
+  router = event.detail
 }
 </script>
 
-<svelte:window on:hashchange="{routeByHash}" />
+<HashRouter on:change="{onChangeHash}" />
 
 <div class="container">
   <GlobalHeader />
@@ -43,10 +41,13 @@ const routeByHash = () => {
   </div>
   <Title />
   <slot />
-  {#if hash === "profile"}
-  <ProfileOverlay relay="{params.relay}" pubkey="{params.pubkey}" />
+  {#if router.hash === "profile"}
+  <ProfileOverlay
+    relay="{router.params.relay}"
+    pubkey="{router.params.pubkey}"
+  />
   {/if}
-  {#if hash === "setting"}
+  {#if router.hash === "setting"}
   <SettingOverlay />
   {/if}
 </div>

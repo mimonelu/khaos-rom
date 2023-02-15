@@ -7,7 +7,7 @@ import SVGIcon from "$/components/SVGIcon.svelte"
   <h1 class="logo">
     <SVGIcon name="logo" />
   </h1>
-  <p>Khaos ROM is nostr global viewer.</p>
+  <p>Khaos ROM is Nostr global viewer.</p>
   <button
     class="button--plane"
     on:click="{() => nostrStore.retrieveGlobalNotes()}"
