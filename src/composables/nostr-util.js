@@ -1,6 +1,6 @@
 import { relayInit } from "nostr-tools"
 
-export const connectOnce = async (url, query, onSuccess, onDisconnect, onError) => {
+export const connectOnce = async (url, query, onEvent, onSuccess, onDisconnect, onError) => {
   const relay = relayInit(url)
   await relay.connect()
   relay.on("connect", () => {
@@ -16,11 +16,12 @@ export const connectOnce = async (url, query, onSuccess, onDisconnect, onError) 
   })
   const sub = relay.sub([query])
   sub.on("event", event => {
-    sub.on("eose", () => {
-      console.info(`[O] EOSE (once): ${url}`)
-      sub.unsub()
-    })
-    if (onSuccess) onSuccess(event)
+    if (onEvent) onEvent(event)
+  })
+  sub.on("eose", () => {
+    console.info(`[O] EOSE (once): ${url}`)
+    sub.unsub()
+    if (onSuccess) onSuccess()
   })
   return relay
 }
@@ -59,9 +60,9 @@ export const sanitizeEvent = event => {
 
 export const sortEventsByCreatedAt = events =>
   events.sort((a, b) =>
-    a[1].created_at < b[1].created_at
+    a.created_at < b.created_at
       ? - 1
-      : a[1].created_at > b[1].created_at
+      : a.created_at > b.created_at
         ? 1
         : 0
   )

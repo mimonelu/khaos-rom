@@ -2,34 +2,22 @@
 import { onMount } from "svelte"
 import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
+import EventTable from "$/components/EventTable.svelte"
 import OpenButton from "$/components/OpenButton.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
 
 export let relay = null
 export let pubkey = null
 
-let about = ""
-let banner = ""
-let displayName = ""
-let lud06 = ""
-let name = ""
-let picture = ""
-let website = ""
+let profile = {}
+let notes = []
 
 onMount(() => {
-  nostrStore.retrieveProfile(relay, pubkey, profile => {
-    about = profile.about ?? ""
-    banner = profile.banner ?? ""
-    displayName = profile.display_name ?? ""
-    lud06 = profile.lud06 ?? ""
-    name = profile.name ?? ""
-    picture = profile.picture ?? ""
-    // Because some person doesn't write a protocol.
-    website = !profile.website
-      ? ""
-      : /^http/.test(profile.website)
-        ? profile.website
-        : `https://${profile.website}`
+  nostrStore.retrieveProfile(relay, pubkey, newProfile => {
+    profile = newProfile
+  })
+  nostrStore.retrieveOnesNotes(relay, pubkey, events => {
+    notes = events
   })
 })
 
@@ -44,7 +32,7 @@ const blockUser = () => {
   <div class="inner">
     <div
       class="banner"
-      style="{`background-image: url(${banner});`}"
+      style="{`background-image: url(${profile.banner ?? ""});`}"
     />
     <a
       class="button--plane close-button"
@@ -54,16 +42,16 @@ const blockUser = () => {
       <div class="top">
         <div
           class="thumbnail"
-          style="{`background-image: url(${picture});`}"
+          style="{`background-image: url(${profile.picture ?? ""});`}"
         />
         <div class="right">
-          <div class="displayName">{displayName}</div>
-          <div class="name">{name}</div>
+          <div class="displayName">{profile.displayName ?? ""}</div>
+          <div class="name">{profile.name ?? ""}</div>
         </div>
       </div>
       <div class="menu">
-        <OpenButton url="{`https://iris.to/profile/${pubkey}`}">iris</OpenButton>
-        <OpenButton url="{`https://snort.social/p/${pubkey}`}">snort</OpenButton>
+        <OpenButton url="{`https://iris.to/profile/${pubkey ?? ""}`}">iris</OpenButton>
+        <OpenButton url="{`https://snort.social/p/${pubkey ?? ""}`}">snort</OpenButton>
         <button
           class="button--red"
           on:click="{() => blockUser()}"
@@ -74,13 +62,14 @@ const blockUser = () => {
       </div>
       <a
         class="website"
-        href="{website}"
+        href="{profile.website ?? ""}"
         rel="noreferrer"
         target="_blank"
-      >{website}</a>
-      <div class="pubkey">{pubkey}</div>
-      <div class="lud06">{lud06}</div>
-      <div class="about">{about}</div>
+      >{profile.website ?? ""}</a>
+      <div class="pubkey">{pubkey ?? ""}</div>
+      <div class="lud06">{profile.lud06 ?? ""}</div>
+      <div class="about">{profile.about ?? ""}</div>
+      <EventTable events="{notes}" />
     </div>
   </div>
 </div>

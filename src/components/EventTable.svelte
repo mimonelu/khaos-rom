@@ -5,9 +5,11 @@ import OpenButton from "$/components/OpenButton.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
 import TextLink from "$/components/TextLink.svelte"
 
+export let events = []
+
 const openPost = event => {
   event.folded = !event.folded
-  $nostrStore.displayEvents = $nostrStore.displayEvents
+  events = events
 }
 
 const blockUser = pubkey => {
@@ -18,7 +20,7 @@ const blockUser = pubkey => {
 </script>
 
 <div class="container">
-{#each $nostrStore.displayEvents as event}
+{#each events as event}
   <div
     class="event"
     data-folded="{event.folded}"
@@ -111,7 +113,6 @@ const blockUser = pubkey => {
   flex-direction: column;
   grid-gap: 1rem;
   line-height: 1;
-  padding: 0 1rem;
 }
 
 .event {

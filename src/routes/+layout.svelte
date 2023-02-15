@@ -39,7 +39,7 @@ const routeByHash = () => {
   <GlobalHeader />
   <!-- TODO: Can you remove this div tag?-->
   <div class="event-table">
-    <EventTable />
+    <EventTable events="{$nostrStore.displayEvents}" />
   </div>
   <Title />
   <slot />
@@ -60,7 +60,7 @@ const routeByHash = () => {
 
 .event-table {
   margin: auto;
-  padding-top: 1rem;
+  padding: 1rem 1rem 0;
   max-width: $max-width;
   @media all and (max-width: $max-width) {
     min-width: 100vw;
