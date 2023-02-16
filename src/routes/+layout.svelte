@@ -5,6 +5,7 @@ import "$/scss/main.scss"
 import { onMount, onDestroy } from "svelte"
 import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
+import profileStore from "$/store/profile.js"
 import EventTable from "$/components/EventTable.svelte"
 import GlobalHeader from "$/components/GlobalHeader.svelte"
 import HashRouter from "$/components/HashRouter.svelte"
@@ -14,6 +15,7 @@ import Title from "$/components/Title.svelte"
 
 onMount(() => {
   blockStore.loadBlocks()
+  profileStore.loadProfiles()
   nostrStore.setupRelay()
 })
 

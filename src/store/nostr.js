@@ -4,12 +4,15 @@ import { nip19 } from "nostr-tools"
 import {
   connectOnce,
   connectPermanent,
+  createEmptyProfile,
   sanitizeEvent,
+  sanitizeProfile,
   sortEventsByCreatedAt,
 } from "$/composables/nostr-util.js"
 import classifyText from "$/composables/classify-text.js"
 import hexToRgb from "$/composables/hex-to-rgb.js"
 import blockStore from "$/store/block.js"
+import profileStore from "$/store/profile.js"
 
 const defaultRelayUrls = [
   "wss://relay.damus.io",
@@ -54,7 +57,7 @@ function create () {
     })
   }
 
-  const formatDate = date => format(new Date(date * 1000), "MM/dd HH:mm:ss")
+  const formatDate = date => format(new Date(date * 1000), "MM/dd HH:mm")
 
   const createCustomNoteEvent = (rawEvent, event, eventString, relayUrl) => {
     const noteId = nip19.noteEncode(event.id)
@@ -82,6 +85,7 @@ function create () {
       relay: relayUrl,
       replyId: null,
       replyStatus: 0,
+      profile: {},
       folded: true,
     }
   }
@@ -204,6 +208,16 @@ function create () {
         state.displayEvents.reverse()
 
         // TODO:
+        state.displayEvents.forEach(event => {
+          if (profileStore.hasProfile(event.pubkey)) {
+            const profile = profileStore.getProfile(event.pubkey)
+            event.profile = profile
+          } else {
+            profileStore.addProfile(event.pubkey, createEmptyProfile())
+          }
+        })
+
+        // TODO:
         state.relays.forEach(relay => { relay.totalNumberOfDisplayEvents = 0 })
         state.displayEvents.forEach(event => {
           const relay = state.relays.get(event.relay)
@@ -230,20 +244,10 @@ function create () {
         const eventString = JSON.stringify(rawEvent)
         const event = JSON.parse(eventString)
         sanitizeEvent(event)
-
         const profile = JSON.parse(event.content)
-        profile.about ??= ""
-        profile.banner ??= ""
-        profile.display_name ??= ""
-        profile.lud06 ??= ""
-        profile.name ??= ""
-        profile.picture ??= ""
-        // Because some person doesn't write a protocol.
-        profile.website = !profile.website
-          ? ""
-          : /^http/.test(profile.website)
-            ? profile.website
-            : `https://${profile.website}`
+        sanitizeProfile(profile)
+
+        profileStore.addProfile(pubkey, profile)
 
         onSuccess(profile)
       })
@@ -261,6 +265,7 @@ function create () {
         const event = JSON.parse(eventString)
         sanitizeEvent(event)
         const customNoteEvent = createCustomNoteEvent(rawEvent, event, eventString, relayUrl)
+        customNoteEvent.profile = profileStore.getProfile(pubkey)
         events.push(customNoteEvent)
       }, () => {
         sortEventsByCreatedAt(events)

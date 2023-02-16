@@ -14,17 +14,20 @@ function create () {
     subscribe,
 
     loadBlocks () {
-      const blocks = localStorage.getItem("blocks")
-      if (blocks != null) {
-        set(new Set(JSON.parse(blocks)))
-      }
+      const blocksJson = localStorage.getItem("blocks")
+      if (blocksJson == null) return
+      const blocksArray = JSON.parse(blocksJson)
+      set(new Set(blocksArray))
     },
 
     saveBlocks () {
       proc(state => {
         const blocksArray = []
-        state.forEach(block => blocksArray.push(block))
-        localStorage.setItem("blocks", JSON.stringify(blocksArray))
+        state.forEach(block => {
+          blocksArray.push(block)
+        })
+        const blocksJson = JSON.stringify(blocksArray)
+        localStorage.setItem("blocks", blocksJson)
       })
     },
 

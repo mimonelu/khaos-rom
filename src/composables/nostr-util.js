@@ -66,3 +66,28 @@ export const sortEventsByCreatedAt = events =>
         ? 1
         : 0
   )
+
+export const createEmptyProfile = () => ({
+  about: "",
+  banner: "",
+  display_name: "",
+  lud06: "",
+  name: "",
+  picture: "",
+  website: "",
+})
+
+export const sanitizeProfile = profile => {
+  profile.about ??= ""
+  profile.banner ??= ""
+  profile.display_name ??= ""
+  profile.lud06 ??= ""
+  profile.name ??= ""
+  profile.picture ??= ""
+  // Because some person doesn't write a protocol.
+  profile.website = !profile.website
+    ? ""
+    : /^http/.test(profile.website)
+      ? profile.website
+      : `https://${profile.website}`
+}

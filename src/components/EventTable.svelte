@@ -38,7 +38,7 @@ const blockUser = pubkey => {
       <a
         class="thumbnail"
         href="{`#profile?relay=${event.relay}&pubkey=${event.pubkey}`}"
-        style="{`border-color: #${event.colorHex};`}"
+        style="{`background-image: url(${event.profile?.picture}); border-color: #${event.colorHex};`}"
       />
     </div>
     <div
@@ -94,12 +94,12 @@ const blockUser = pubkey => {
         >{event.eventString}</code>
       </div>
       <div class="bottom">
+        <div class="received_at">{event.received_at_string}</div>
+        <div class="created_at">{event.created_at_string}</div>
         <div
           class="pubkey"
           style="{`color: rgb(${event.colorRgb});`}"
-        >{event.colorHex}</div>
-        <div class="received_at">{event.received_at_string}</div>
-        <div class="created_at">{event.created_at_string}</div>
+        >{event.profile?.display_name || event.colorHex}</div>
         <div class="relay">{event.relay}</div>
       </div>
     </div>
@@ -148,6 +148,9 @@ const blockUser = pubkey => {
 }
 
 .thumbnail {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
   border: 1px solid transparent;
   border-radius: 1px;
   overflow: hidden;
@@ -300,18 +303,20 @@ const blockUser = pubkey => {
   overflow: hidden;
 }
 
-.pubkey {
-  white-space: nowrap;
-}
-
 .received_at {
   color: rgba(var(--fg-color), 0.5);
   display: none;
+  font-family: monospace;
   white-space: nowrap;
 }
 
 .created_at {
   color: rgba(var(--fg-color), 0.5);
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+.pubkey {
   white-space: nowrap;
 }
 

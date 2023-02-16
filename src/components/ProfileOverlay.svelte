@@ -2,6 +2,7 @@
 import { onMount } from "svelte"
 import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
+import { createEmptyProfile } from "$/composables/nostr-util.js"
 import EventTable from "$/components/EventTable.svelte"
 import OpenButton from "$/components/OpenButton.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
@@ -9,14 +10,15 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 export let relay = null
 export let pubkey = null
 
-let profile = {}
+let profile = createEmptyProfile()
 let notes = []
 
-onMount(() => {
-  nostrStore.retrieveProfile(relay, pubkey, newProfile => {
+onMount(async () => {
+  await nostrStore.retrieveProfile(relay, pubkey, newProfile => {
     profile = newProfile
+    nostrStore.updateDisplayEvents()
   })
-  nostrStore.retrieveOnesNotes(relay, pubkey, events => {
+  await nostrStore.retrieveOnesNotes(relay, pubkey, events => {
     notes = events
   })
 })
@@ -32,7 +34,7 @@ const blockUser = () => {
   <div class="inner">
     <div
       class="banner"
-      style="{`background-image: url(${profile.banner ?? ""});`}"
+      style="{`background-image: url(${profile.banner});`}"
     />
     <a
       class="button--plane close-button"
@@ -42,16 +44,16 @@ const blockUser = () => {
       <div class="top">
         <div
           class="thumbnail"
-          style="{`background-image: url(${profile.picture ?? ""});`}"
+          style="{`background-image: url(${profile.picture});`}"
         />
         <div class="right">
-          <div class="displayName">{profile.displayName ?? ""}</div>
-          <div class="name">{profile.name ?? ""}</div>
+          <div class="display-name">{profile.display_name}</div>
+          <div class="name">{profile.name}</div>
         </div>
       </div>
       <div class="menu">
-        <OpenButton url="{`https://iris.to/profile/${pubkey ?? ""}`}">iris</OpenButton>
-        <OpenButton url="{`https://snort.social/p/${pubkey ?? ""}`}">snort</OpenButton>
+        <OpenButton url="{`https://iris.to/profile/${pubkey}`}">iris</OpenButton>
+        <OpenButton url="{`https://snort.social/p/${pubkey}`}">snort</OpenButton>
         <button
           class="button--red"
           on:click="{() => blockUser()}"
@@ -62,13 +64,13 @@ const blockUser = () => {
       </div>
       <a
         class="website"
-        href="{profile.website ?? ""}"
+        href="{profile.website}"
         rel="noreferrer"
         target="_blank"
-      >{profile.website ?? ""}</a>
-      <div class="pubkey">{pubkey ?? ""}</div>
-      <div class="lud06">{profile.lud06 ?? ""}</div>
-      <div class="about">{profile.about ?? ""}</div>
+      >{profile.website}</a>
+      <div class="pubkey">{pubkey}</div>
+      <div class="lud06">{profile.lud06}</div>
+      <div class="about">{profile.about}</div>
       <EventTable events="{notes}" />
     </div>
   </div>
@@ -162,7 +164,7 @@ const blockUser = () => {
   justify-content: flex-end;
 }
 
-.displayName {
+.display-name {
   color: rgb(var(--accent-color));
   font-size: 1.5rem;
   font-weight: bold;
