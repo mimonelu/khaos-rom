@@ -207,10 +207,7 @@ function create () {
 
         // TODO:
         state.displayEvents.forEach(event => {
-          if (profileStore.hasProfile(event.pubkey)) {
-            const profile = profileStore.getProfile(event.pubkey)
-            event.profile = profile
-          } else {
+          if (!profileStore.hasProfile(event.pubkey)) {
             profileStore.addProfile(event.pubkey, createEmptyProfile())
           }
         })
@@ -263,7 +260,6 @@ function create () {
         const event = JSON.parse(eventString)
         sanitizeEvent(event)
         const customNoteEvent = createCustomNoteEvent(rawEvent, event, eventString, relayUrl)
-        customNoteEvent.profile = profileStore.getProfile(pubkey)
         events.push(customNoteEvent)
       }, () => {
         sortEventsByCreatedAt(events)

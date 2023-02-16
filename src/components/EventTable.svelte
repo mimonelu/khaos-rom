@@ -3,13 +3,16 @@ import ActionMenu from "$/components/ActionMenu.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
 import TextLink from "$/components/TextLink.svelte"
 import { backgroundImage } from "$/composables/css-util.js"
+import profileStore from "$/store/profile.js"
 
 export let events = []
 
-const openPost = event => {
+const toggleEventDisplay = event => {
   event.folded = !event.folded
   events = events
 }
+
+const getProfile = pubkey => $profileStore.get(pubkey)
 </script>
 
 <div class="container">
@@ -31,12 +34,12 @@ const openPost = event => {
       <a
         class="thumbnail"
         href="{`#profile?relay=${event.relay}&pubkey=${event.pubkey}`}"
-        style="{`${backgroundImage(event.profile?.picture)} border-color: #${event.colorHex};`}"
+        style="{`${backgroundImage(getProfile(event.pubkey)?.picture)} border-color: #${event.colorHex};`}"
       />
     </div>
     <div
       class="right"
-      on:click="{() => openPost(event)}"
+      on:click="{() => toggleEventDisplay(event)}"
     >
       <div class="top">
         <div class="content-wrapper">
@@ -85,7 +88,7 @@ const openPost = event => {
         <div
           class="pubkey"
           style="{`color: rgb(${event.colorRgb});`}"
-        >{event.profile?.display_name || event.colorHex}</div>
+        >{getProfile(event.ppubkey)?.display_name || event.colorHex}</div>
         <div class="relay">{event.relay}</div>
       </div>
     </div>
