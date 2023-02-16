@@ -2,9 +2,9 @@
 import { onMount } from "svelte"
 import ActionMenu from "$/components/ActionMenu.svelte"
 import EventTable from "$/components/EventTable.svelte"
+import TextLink from "$/components/TextLink.svelte"
 import { createEmptyProfile } from "$/composables/nostr-util.js"
 import { backgroundImage } from "$/composables/css-util.js"
-import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
 
 export let relay = null
@@ -22,12 +22,6 @@ onMount(async () => {
     notes = events
   })
 })
-
-const blockUser = () => {
-  blockStore.addBlock(pubkey)
-  nostrStore.updateDisplayEvents()
-  location.href = "#home"
-}
 </script>
 
 <div class="container">
@@ -55,12 +49,7 @@ const blockUser = () => {
         type="profile"
         pubkey="{pubkey}"
       />
-      <a
-        class="website"
-        href="{profile.website}"
-        rel="noreferrer"
-        target="_blank"
-      >{profile.website}</a>
+      <TextLink url="{profile.website}">{profile.website}</TextLink>
       <div class="pubkey">{pubkey}</div>
       <div class="lud06">{profile.lud06}</div>
       <div class="about">{profile.about}</div>
@@ -180,9 +169,7 @@ const blockUser = () => {
   }
 }
 
-.website {
-  color: rgb(var(--access-color));
-  line-height: 1.5;
+:global(.text-link) {
   overflow: hidden;
   text-overflow: ellipsis;
   &:empty {

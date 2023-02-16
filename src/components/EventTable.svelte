@@ -3,20 +3,12 @@ import ActionMenu from "$/components/ActionMenu.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
 import TextLink from "$/components/TextLink.svelte"
 import { backgroundImage } from "$/composables/css-util.js"
-import blockStore from "$/store/block.js"
-import nostrStore from "$/store/nostr.js"
 
 export let events = []
 
 const openPost = event => {
   event.folded = !event.folded
   events = events
-}
-
-const blockUser = pubkey => {
-  blockStore.addBlock(pubkey)
-  nostrStore.updateDisplayEvents()
-  nostrStore.updateReplys()
 }
 </script>
 
