@@ -8,7 +8,7 @@ specifiers:
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
-  nostr-tools: ^1.4.1
+  nostr-tools: ^1.4.2
   postcss: ^8.4.21
   prettier: ^2.8.0
   prettier-plugin-svelte: ^2.8.1
@@ -20,7 +20,7 @@ specifiers:
 
 dependencies:
   date-fns: 2.29.3
-  nostr-tools: 1.4.1
+  nostr-tools: 1.4.2
   the-new-css-reset: 1.8.3
 
 devDependencies:
@@ -1119,8 +1119,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /nostr-tools/1.4.1:
-    resolution: {integrity: sha512-pFAbVNtRMfW5ducUmk0f20IZv4a6pXYchBQKuA6D3x6sg83KoWipuiAie/gfOgrkoCsBLV14DmpWsVmo3N7WXQ==}
+  /nostr-tools/1.4.2:
+    resolution: {integrity: sha512-JKAEbJI89VkGYWBB27PBhD4WPfjnpAtVIBaDTA2YN97BkiyzigTiMGycsxpejagajYr+uTNMMWED5PMFTmtYJA==}
     dependencies:
       '@noble/hashes': 1.0.0
       '@noble/secp256k1': 1.7.1

@@ -27,7 +27,7 @@
 	"type": "module",
 	"dependencies": {
 		"date-fns": "^2.29.3",
-		"nostr-tools": "^1.4.1",
+		"nostr-tools": "^1.4.2",
 		"the-new-css-reset": "^1.8.3"
 	}
 }
