@@ -60,7 +60,6 @@ function create () {
   const formatDate = date => format(new Date(date * 1000), "MM/dd HH:mm")
 
   const createCustomNoteEvent = (rawEvent, event, eventString, relayUrl) => {
-    const noteId = nip19.noteEncode(event.id)
     const colorHex = event.pubkey.slice(0, 6)
     const colorRgb = hexToRgb(colorHex)
     const classifiedContent = classifyText(event.content)
@@ -74,7 +73,6 @@ function create () {
       raw: rawEvent,
       ...event,
       eventString,
-      noteId,
       colorHex,
       colorRgb,
       classifiedContent,

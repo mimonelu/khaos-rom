@@ -1,5 +1,5 @@
 <script>
-import OpenButton from "$/components/OpenButton.svelte"
+import ActionMenu from "$/components/ActionMenu.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
 import TextLink from "$/components/TextLink.svelte"
 import { backgroundImage } from "$/composables/css-util.js"
@@ -65,18 +65,11 @@ const blockUser = pubkey => {
           {/each}
           </div>
         </div>
-        <div class="menu">
-          <OpenButton url="{`nostr:${event.noteId}`}">App</OpenButton>
-          <OpenButton url="{`https://iris.to/post/${event.id}`}">iris</OpenButton>
-          <OpenButton url="{`https://snort.social/e/${event.noteId}`}">snort</OpenButton>
-          <button
-            class="button--red"
-            on:click|stopPropagation="{() => blockUser(event.pubkey)}"
-          >
-            <SVGIcon name="block" />
-            <span>Block</span>
-          </button>
-        </div>
+        <ActionMenu
+          type="note"
+          pubkey="{event.pubkey}"
+          eventId="{event.id}"
+        />
         <div class="image-link">
         {#each event.heroImages as heroImage}
           {#if heroImage.type === "image"}
@@ -211,17 +204,8 @@ const blockUser = pubkey => {
   word-break: break-all;
 }
 
-.menu {
-  display: flex;
-  grid-gap: 0.5rem;
-  [data-folded="true"] & {
-    display: none;
-  }
-  & > .button--red {
-    font-size: 0.75rem;
-    margin-left: auto;
-    padding: 0.375rem 1rem;
-  }
+[data-folded="true"] :global(.action-menu) {
+  display: none;
 }
 
 .image-link {

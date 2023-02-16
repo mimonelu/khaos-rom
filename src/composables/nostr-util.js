@@ -1,4 +1,8 @@
-import { relayInit } from "nostr-tools"
+import { nip19, relayInit } from "nostr-tools"
+
+export const toNote = hex => nip19.noteEncode(hex)
+
+export const toNpub = hex => nip19.npubEncode(hex)
 
 export const connectOnce = async (url, query, onEvent, onSuccess, onDisconnect, onError) => {
   const relay = relayInit(url)

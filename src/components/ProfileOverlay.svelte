@@ -1,9 +1,8 @@
 <script>
 import { onMount } from "svelte"
-import { createEmptyProfile } from "$/composables/nostr-util.js"
+import ActionMenu from "$/components/ActionMenu.svelte"
 import EventTable from "$/components/EventTable.svelte"
-import OpenButton from "$/components/OpenButton.svelte"
-import SVGIcon from "$/components/SVGIcon.svelte"
+import { createEmptyProfile } from "$/composables/nostr-util.js"
 import { backgroundImage } from "$/composables/css-util.js"
 import blockStore from "$/store/block.js"
 import nostrStore from "$/store/nostr.js"
@@ -52,17 +51,10 @@ const blockUser = () => {
           <div class="name">{profile.name}</div>
         </div>
       </div>
-      <div class="menu">
-        <OpenButton url="{`https://iris.to/profile/${pubkey}`}">iris</OpenButton>
-        <OpenButton url="{`https://snort.social/p/${pubkey}`}">snort</OpenButton>
-        <button
-          class="button--red"
-          on:click="{() => blockUser()}"
-        >
-          <SVGIcon name="block" />
-          <span>Block</span>
-        </button>
-      </div>
+      <ActionMenu
+        type="profile"
+        pubkey="{pubkey}"
+      />
       <a
         class="website"
         href="{profile.website}"
@@ -185,16 +177,6 @@ const blockUser = () => {
   text-overflow: ellipsis;
   &:empty {
     display: contents;
-  }
-}
-
-.menu {
-  display: flex;
-  grid-gap: 0.5rem;
-  & > .button--red {
-    font-size: 0.75rem;
-    margin-left: auto;
-    padding: 0.375rem 1rem;
   }
 }
 
