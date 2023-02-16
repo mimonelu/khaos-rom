@@ -1,9 +1,10 @@
 <script>
-import blockStore from "$/store/block.js"
-import nostrStore from "$/store/nostr.js"
 import OpenButton from "$/components/OpenButton.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
 import TextLink from "$/components/TextLink.svelte"
+import { backgroundImage } from "$/composables/css-util.js"
+import blockStore from "$/store/block.js"
+import nostrStore from "$/store/nostr.js"
 
 export let events = []
 
@@ -38,7 +39,7 @@ const blockUser = pubkey => {
       <a
         class="thumbnail"
         href="{`#profile?relay=${event.relay}&pubkey=${event.pubkey}`}"
-        style="{`background-image: url(${event.profile?.picture}); border-color: #${event.colorHex};`}"
+        style="{`${backgroundImage(event.profile?.picture)} border-color: #${event.colorHex};`}"
       />
     </div>
     <div
@@ -83,7 +84,7 @@ const blockUser = pubkey => {
             href="{heroImage.data}"
             target="_blank"
             rel="noreferrer"
-            style="{`background-image: url(${heroImage.data});`}"
+            style="{backgroundImage(heroImage.data)}"
           />
           {/if}
         {/each}

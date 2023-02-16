@@ -1,11 +1,12 @@
 <script>
 import { onMount } from "svelte"
-import blockStore from "$/store/block.js"
-import nostrStore from "$/store/nostr.js"
 import { createEmptyProfile } from "$/composables/nostr-util.js"
 import EventTable from "$/components/EventTable.svelte"
 import OpenButton from "$/components/OpenButton.svelte"
 import SVGIcon from "$/components/SVGIcon.svelte"
+import { backgroundImage } from "$/composables/css-util.js"
+import blockStore from "$/store/block.js"
+import nostrStore from "$/store/nostr.js"
 
 export let relay = null
 export let pubkey = null
@@ -34,7 +35,7 @@ const blockUser = () => {
   <div class="inner">
     <div
       class="banner"
-      style="{`background-image: url(${profile.banner});`}"
+      style="{backgroundImage(profile.banner)}"
     />
     <a
       class="button--plane close-button"
@@ -44,7 +45,7 @@ const blockUser = () => {
       <div class="top">
         <div
           class="thumbnail"
-          style="{`background-image: url(${profile.picture});`}"
+          style="{backgroundImage(profile.picture)}"
         />
         <div class="right">
           <div class="display-name">{profile.display_name}</div>
