@@ -15,19 +15,17 @@ $: relays = [...$nostrStore.relays.values()]
 <style lang="scss">
 .container {
   display: flex;
-  grid-gap: 2px;
+  grid-gap: 4px;
   & > div {
-    border-radius: 0.25rem;
-    width: 0.25rem;
-  }
-  [data-status="disconnected"] {
-    background-color: rgba(var(--fg-color), 0.25);
+    border: 1px solid rgba(var(--fg-color), 0.25);
+    border-radius: 0.375rem;
+    width: 0.375rem;
   }
   [data-status="connecting"] {
-    background-color: rgb(var(--fg-color));
+    background-color: rgb(var(--notice-color));
   }
   [data-status="connected"] {
-    background-color: rgb(var(--accent-color));
+    background-color: rgb(var(--fg-color));
   }
 }
 </style>

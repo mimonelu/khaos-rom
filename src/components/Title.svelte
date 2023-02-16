@@ -3,7 +3,7 @@ import nostrStore from "$/store/nostr.js"
 import SVGIcon from "$/components/SVGIcon.svelte"
 </script>
 
-<div class="container">
+<div class="title">
   <h1 class="logo">
     <SVGIcon name="logo" />
   </h1>
@@ -19,14 +19,13 @@ import SVGIcon from "$/components/SVGIcon.svelte"
 </div>
 
 <style lang="scss">
-.container {
+.title {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   align-items: center;
   justify-content: center;
   grid-gap: 2rem;
-  padding: 8rem 2rem;
+  // padding: 8rem 2rem;
 }
 
 .logo {

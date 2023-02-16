@@ -75,6 +75,7 @@ export const createEmptyProfile = () => ({
   name: "",
   picture: "",
   website: "",
+  relay: "",
 })
 
 export const sanitizeProfile = profile => {

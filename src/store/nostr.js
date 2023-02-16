@@ -1,6 +1,5 @@
 import { format } from "date-fns"
 import { writable } from "svelte/store"
-import { nip19 } from "nostr-tools"
 import {
   connectOnce,
   connectPermanent,
@@ -83,7 +82,6 @@ function create () {
       relay: relayUrl,
       replyId: null,
       replyStatus: 0,
-      profile: {},
       folded: true,
     }
   }
@@ -208,7 +206,9 @@ function create () {
         // TODO:
         state.displayEvents.forEach(event => {
           if (!profileStore.hasProfile(event.pubkey)) {
-            profileStore.addProfile(event.pubkey, createEmptyProfile())
+            const profile = createEmptyProfile()
+            profile.relay = event.relay
+            profileStore.addProfile(event.pubkey, profile)
           }
         })
 
@@ -241,6 +241,7 @@ function create () {
         sanitizeEvent(event)
         const profile = JSON.parse(event.content)
         sanitizeProfile(profile)
+        profile.relay = relayUrl
 
         profileStore.addProfile(pubkey, profile)
 

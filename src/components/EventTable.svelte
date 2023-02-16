@@ -15,7 +15,7 @@ const toggleEventDisplay = event => {
 const getProfile = pubkey => $profileStore.get(pubkey)
 </script>
 
-<div class="container">
+<div class="event-table">
 {#each events as event}
   <div
     class="event"
@@ -97,7 +97,7 @@ const getProfile = pubkey => $profileStore.get(pubkey)
 </div>
 
 <style lang="scss">
-.container {
+.event-table {
   display: flex;
   flex-direction: column;
   grid-gap: 1rem;
@@ -113,6 +113,7 @@ const getProfile = pubkey => $profileStore.get(pubkey)
   display: flex;
   align-items: flex-start;
   grid-gap: 0.5rem;
+  position: relative;
 }
 
 .reply {
@@ -273,6 +274,9 @@ const getProfile = pubkey => $profileStore.get(pubkey)
 }
 
 [data-folded="true"] .console {
+  display: none;
+}
+.console {
   display: none;
 }
 
